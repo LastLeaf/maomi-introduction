@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="/pkg/maomi_introduction.css">
+    <title>{title}</title>
+  </head>
+  <body>{body}</body>
+  <script src="/pkg/maomi_introduction.js"></script>
+  <script>
+    wasm_bindgen('/pkg/maomi_introduction_bg.wasm').then(function() {{
+      wasm_bindgen.server_side_rendering_init('{req_path}', '{data}')
+    }})
+  </script>
+</html>
