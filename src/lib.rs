@@ -125,12 +125,14 @@ where
 pub(crate) fn jump_to(
     req_path: &str,
     query_str: &str,
-) -> Result<(), String> {
+) {
     let url = format!("{}?{}", req_path, query_str);
     HISTORY.with(|history| {
         history.push_state_with_url(&JsValue::NULL, "", Some(&url)).unwrap();
     });
-    client_side_rendering(req_path, query_str)
+    if let Err(err) = client_side_rendering(req_path, query_str) {
+        log::error!("{}", err);
+    }
 }
 
 fn init_pop_state_listener(window: &web_sys::Window) {

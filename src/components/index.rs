@@ -1,42 +1,74 @@
-// import maomi core module
-use maomi::{prelude::*, locale_string::*};
-// using DOM backend
-use maomi_dom::{element::*, event::*, prelude::dom_css, DomBackend};
+use maomi::{prelude::*};
+use maomi_dom::{prelude::*, element::*};
 
 use crate::PageMeta;
+use crate::components;
+use components::page_wrapper::PageWrapper;
 
-// write limited CSS
 dom_css!(
-    // only single class selectors are allowed
-    .warn {
-        color: orange;
-        font-size: 16px;
+    .section {
+        padding: 20px;
     }
+
+    .section_title {
+        font_size: 20px;
+    }
+
+    .section_img {}
+    .section_desc {}
 );
 
 // declare a component
 #[component(Backend = DomBackend, Translation = index)]
 pub(crate) struct Index {
-    // a component should have a template field
     template: template! {
-        // the template is XML-like
-        <div title="Hello!">
-            // strings in the template must be quoted
-            "Hello world!"
-        </div>
-        // use { ... } bindings in the template
-        <div tap=@jump() title={ self.hello.to_locale_str() }>
-            { &self.hello }
-        </div>
-        // use classes in `class:xxx` form
-        <div class:warn> "WARN" </div>
-        // bind event with `@xxx()`
-        if !self.r {
-            <div tap=@handle_tap()> "Click me!" </div>
-        }
+        <PageWrapper>
+            <h1> "maomi" </h1>
+            <h2> "Strict and Performant Web Application Programing" </h2>
+            <div class:section>
+                <h2 class:section_title> "Better Performance" </h2>
+                <img class:section_img src="" />
+                <div class:section_desc>
+                    ""
+                </div>
+            </div>
+            <div class:section>
+                <h2 class:section_title> "Strict Programing in Rust" </h2>
+                <img class:section_img src="" />
+                <div class:section_desc>
+                    ""
+                </div>
+            </div>
+            <div class:section>
+                <h2 class:section_title> "Report Mistakes while Compilation" </h2>
+                <img class:section_img src="" />
+                <div class:section_desc>
+                    ""
+                </div>
+            </div>
+            <div class:section>
+                <h2 class:section_title> "Work with rust-analyzer" </h2>
+                <img class:section_img src="" />
+                <div class:section_desc>
+                    ""
+                </div>
+            </div>
+            <div class:section>
+                <h2 class:section_title> "Limited CSS" </h2>
+                <img class:section_img src="" />
+                <div class:section_desc>
+                    ""
+                </div>
+            </div>
+            <div class:section>
+                <h2 class:section_title> "Integrated i18n Support" </h2>
+                <img class:section_img src="" />
+                <div class:section_desc>
+                    ""
+                </div>
+            </div>
+        </PageWrapper>
     },
-    hello: LocaleString,
-    r: bool,
 }
 
 // implement basic component interfaces
@@ -44,46 +76,29 @@ impl Component for Index {
     fn new() -> Self {
         Self {
             template: Default::default(),
-            hello: i18n!("Hello world again!").to_locale_string(),
-            r: false,
         }
     }
 }
 
 impl Index {
-    fn jump(_: ComponentRc<Self>, _detail: &mut TapEvent) {
-        log::info!("Jump!");
-        crate::jump_to("/", "content=def").unwrap();
-    }
-
-    // an event handler
-    fn handle_tap(this: ComponentRc<Self>, _detail: &mut TapEvent) {
-        log::info!("Clicked!");
-        this.task(|this| this.r = true);
-    }
-}
-
-#[derive(serde::Serialize, serde::Deserialize, Clone)]
-pub(crate) struct QueryData {
-    content: String,
 }
 
 #[async_trait]
 impl PrerenderableComponent for Index {
-    type QueryData = QueryData;
-    type PrerenderingData = QueryData;
+    type QueryData = ();
+    type PrerenderingData = ();
 
-    async fn prerendering_data(query_data: &Self::QueryData) -> Self::PrerenderingData {
-        query_data.clone()
+    async fn prerendering_data(_: &Self::QueryData) -> Self::PrerenderingData {
+        ()
     }
 
-    fn apply_prerendering_data(&mut self, data: Self::PrerenderingData) {
-        self.hello = LocaleString::translated(data.content);
+    fn apply_prerendering_data(&mut self, _: Self::PrerenderingData) {
+        ()
     }
 }
 
 impl PageMeta for Index {
     fn title(&self) -> &str {
-        &self.hello
+        "maomi - Strict and Performant Web Application Programing"
     }
 }
