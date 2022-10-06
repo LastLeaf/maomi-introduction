@@ -3,6 +3,8 @@ use maomi::{prelude::*, locale_string::*};
 // using DOM backend
 use maomi_dom::{element::*, event::*, prelude::dom_css, DomBackend};
 
+use crate::PageMeta;
+
 // write limited CSS
 dom_css!(
     // only single class selectors are allowed
@@ -28,12 +30,10 @@ pub(crate) struct Index {
         </div>
         // use classes in `class:xxx` form
         <div class:warn> "WARN" </div>
-        <div>
         // bind event with `@xxx()`
         if !self.r {
             <div tap=@handle_tap()> "Click me!" </div>
         }
-        </div>
     },
     hello: LocaleString,
     r: bool,
@@ -79,5 +79,11 @@ impl PrerenderableComponent for Index {
 
     fn apply_prerendering_data(&mut self, data: Self::PrerenderingData) {
         self.hello = LocaleString::translated(data.content);
+    }
+}
+
+impl PageMeta for Index {
+    fn title(&self) -> &str {
+        &self.hello
     }
 }

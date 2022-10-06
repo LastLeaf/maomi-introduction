@@ -13,3 +13,5 @@ To build release, execute:
 ```sh
 wasm-pack build --target no-modules && cargo build --release
 ```
+
+Visit `http://localhost:2080` for the website.

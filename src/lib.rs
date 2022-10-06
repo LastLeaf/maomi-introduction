@@ -1,5 +1,5 @@
 use std::cell::RefCell;
-use wasm_bindgen::prelude::*;
+use wasm_bindgen::{prelude::*, JsCast};
 use maomi::{prelude::*, template::ComponentTemplate, BackendContext, mount_point::DynMountPoint, backend::Backend};
 use maomi_dom::prelude::*;
 
@@ -12,12 +12,15 @@ macro_rules! route {
 thread_local! {
     static HISTORY: web_sys::History = {
         let window = web_sys::window().unwrap();
-        let history = window.history().unwrap();
-        // TODO listen on pop state
-        history
+        init_pop_state_listener(&window);
+        window.history().unwrap()
     };
     static BACKEND_CONTEXT: RefCell<Option<BackendContext<DomBackend>>> = RefCell::new(None);
     static CURRENT_MOUNT_POINT: RefCell<Option<DynMountPoint<DomBackend>>> = RefCell::new(None);
+}
+
+pub(crate) trait PageMeta: PrerenderableComponent + ComponentTemplate<DomBackend> {
+    fn title(&self) -> &str;
 }
 
 /// Renders a prerenderable component in server side
@@ -38,7 +41,7 @@ async fn render_component<T>(
     query_str: &str,
 ) -> Result<String, hyper::StatusCode>
 where
-    T: PrerenderableComponent + ComponentTemplate<DomBackend>,
+    T: PageMeta,
     T::QueryData: serde::de::DeserializeOwned,
     T::PrerenderingData: serde::Serialize,
 {
@@ -56,25 +59,28 @@ fn prerender_component_html<T>(
     prerendering_data: maomi::PrerenderingData<T>,
 ) -> Result<String, hyper::StatusCode>
 where
-    T: PrerenderableComponent + ComponentTemplate<DomBackend>,
+    T: PageMeta,
     T::QueryData: serde::de::DeserializeOwned,
     T::PrerenderingData: serde::Serialize,
 {
     let dom_backend = DomBackend::prerendering();
     let backend_context = BackendContext::new(dom_backend);
     let prerendering_data_base64 = base64::encode(&bincode::serialize(prerendering_data.get()).unwrap());
-    let (_mount_point, html_body) = backend_context
+    let (_mount_point, title, html_body) = backend_context
         .enter_sync(move |ctx| {
             let mount_point = ctx.prerendering_attach(prerendering_data).unwrap();
-            let mut ret = vec![];
-            ctx.write_prerendering_html(&mut ret).unwrap();
-            (mount_point, ret)
+            let title = ctx.root_component_with(&mount_point, |c| {
+                c.title().to_string()
+            });
+            let mut html_body = vec![];
+            ctx.write_prerendering_html(&mut html_body).unwrap();
+            (mount_point, title, html_body)
         })
         .map_err(|_| "Cannot init mount point")
         .unwrap();
     let html = format!(
         include_str!("component_html.tmpl"),
-        title = "",
+        title = title,
         body = unsafe { std::str::from_utf8_unchecked(&html_body) },
         req_path = req_path,
         data = prerendering_data_base64,
@@ -94,7 +100,7 @@ pub fn server_side_rendering_init(req_path: &str, base64_data: &str) {
 
 fn server_side_rendering_apply<T>(bin: Vec<u8>)
 where
-    T: PrerenderableComponent + ComponentTemplate<DomBackend>,
+    T: PageMeta,
     T::PrerenderingData: serde::de::DeserializeOwned,
 {
     let data: T::PrerenderingData = bincode::deserialize(&bin).unwrap();
@@ -115,23 +121,45 @@ where
     })
 }
 
-/// jump to another page
+/// jump to another page, doing a client side rendering
 pub(crate) fn jump_to(
     req_path: &str,
     query_str: &str,
 ) -> Result<(), String> {
+    let url = format!("{}?{}", req_path, query_str);
+    HISTORY.with(|history| {
+        history.push_state_with_url(&JsValue::NULL, "", Some(&url)).unwrap();
+    });
+    client_side_rendering(req_path, query_str)
+}
+
+fn init_pop_state_listener(window: &web_sys::Window) {
+    let closure = Closure::<dyn Fn()>::new(move || {
+        let location = web_sys::window().unwrap().document().unwrap().location().unwrap();
+        let req_path = location.pathname().unwrap_or("".to_string());
+        let search = location.search().unwrap_or("".to_string());
+        if let Err(err) = client_side_rendering(&req_path, &search[1..]) {
+            log::error!("{}", err);
+        }
+    }).into_js_value();
+    window.add_event_listener_with_callback("popstate", closure.unchecked_ref()).unwrap();
+}
+
+fn client_side_rendering(
+    req_path: &str,
+    query_str: &str,
+) -> Result<(), String> {
     match req_path {
-        "/" => jump_to_component::<route!("/")>(req_path, query_str),
+        "/" => jump_to_component::<route!("/")>(query_str),
         _ => Err("Invalid rendering path".into()),
     }
 }
 
 fn jump_to_component<T>(
-    req_path: &str,
     query_str: &str,
 ) -> Result<(), String>
 where
-    T: PrerenderableComponent + ComponentTemplate<DomBackend>,
+    T: PageMeta,
     T::QueryData: serde::de::DeserializeOwned,
     T::PrerenderingData: serde::Serialize,
 {
@@ -139,13 +167,9 @@ where
         Ok(x) => x,
         Err(_) => return Err("bad request".into()),
     };
-    let url = format!("{}?{}", req_path, query_str);
     DomBackend::async_task(async move {
         let prerendering_data = BackendContext::<DomBackend>::prerendering_data::<T>(&query_data).await;
         BACKEND_CONTEXT.with(|backend_context| {
-            HISTORY.with(|history| {
-                history.push_state_with_url(&JsValue::NULL, "", Some(&url)).unwrap();
-            });
             let ret = backend_context
                 .borrow_mut()
                 .as_mut()

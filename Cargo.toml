@@ -25,6 +25,7 @@ wasm-bindgen = "0.2"
 version = "0.3"
 features = [
   "History",
+  "Location",
 ]
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
