@@ -1,3 +1,4 @@
+use maomi::locale_string::LocaleString;
 use maomi::{prelude::*};
 use maomi_dom::{prelude::*, element::*};
 
@@ -7,11 +8,11 @@ use components::page_wrapper::PageWrapper;
 
 dom_css!(
     .section {
-        padding: 20px;
+        padding: 20.px;
     }
 
     .section_title {
-        font_size: 20px;
+        font_size: 1.5.em;
     }
 
     .section_img {}
@@ -24,8 +25,8 @@ pub(crate) struct Index {
     template: template! {
         <PageWrapper>
             <h1> "maomi" </h1>
-            <h2> "Strict and Performant Web Application Programing" </h2>
             <div class:section>
+                <h2> "Strict and Performant Web Application Programing" </h2>
                 <h2 class:section_title> "Better Performance" </h2>
                 <img class:section_img src="" />
                 <div class:section_desc>
@@ -33,7 +34,7 @@ pub(crate) struct Index {
                 </div>
             </div>
             <div class:section>
-                <h2 class:section_title> "Strict Programing in Rust" </h2>
+                <h2 class:section_title> "Programing in Rust" </h2>
                 <img class:section_img src="" />
                 <div class:section_desc>
                     ""
@@ -47,7 +48,7 @@ pub(crate) struct Index {
                 </div>
             </div>
             <div class:section>
-                <h2 class:section_title> "Work with rust-analyzer" </h2>
+                <h2 class:section_title> "Work with rust-analyzer in IDE" </h2>
                 <img class:section_img src="" />
                 <div class:section_desc>
                     ""
@@ -55,6 +56,13 @@ pub(crate) struct Index {
             </div>
             <div class:section>
                 <h2 class:section_title> "Limited CSS" </h2>
+                <img class:section_img src="" />
+                <div class:section_desc>
+                    ""
+                </div>
+            </div>
+            <div class:section>
+                <h2 class:section_title> "High Performance Server Side Rendering" </h2>
                 <img class:section_img src="" />
                 <div class:section_desc>
                     ""
@@ -98,7 +106,7 @@ impl PrerenderableComponent for Index {
 }
 
 impl PageMeta for Index {
-    fn title(&self) -> &str {
-        "maomi - Strict and Performant Web Application Programing"
+    fn title(&self) -> LocaleString {
+        i18n!(index, "maomi - Strict and Performant Web Application Programing").to_locale_string()
     }
 }

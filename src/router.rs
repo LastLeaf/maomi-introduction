@@ -7,8 +7,8 @@ pub(crate) async fn route(req: Request<Body>) -> Result<Response<Body>, hyper::h
     match req.method() {
         &Method::GET => {
             let req_path = req.uri().path();
-            // serve /pkg/ as static files
-            if req_path.starts_with("/pkg/") {
+            // serve static files
+            if req_path.starts_with("/pkg/") || req_path.starts_with("/res/") {
                 if let Ok(content) = fs::read(req_path.trim_start_matches("/")) {
                     let mime_type = mime_guess::from_path(req_path).first();
                     let mime_type = mime_type
@@ -19,6 +19,11 @@ pub(crate) async fn route(req: Request<Body>) -> Result<Response<Body>, hyper::h
                         .status(StatusCode::OK)
                         .header("Content-Type", mime_type)
                         .body(Body::from(content));
+                } else {
+                    return Response::builder()
+                        .status(StatusCode::NOT_FOUND)
+                        .header("Content-Type", "text/plain")
+                        .body(Body::from(""));
                 }
             }
             // serve components
@@ -33,7 +38,7 @@ pub(crate) async fn route(req: Request<Body>) -> Result<Response<Body>, hyper::h
                 Err(status_code) => {
                     return Response::builder()
                         .status(status_code)
-                        .header("Content-Type", "text/html")
+                        .header("Content-Type", "text/plain")
                         .body(Body::from(""));
                 }
             }

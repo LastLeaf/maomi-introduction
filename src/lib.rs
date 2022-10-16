@@ -1,6 +1,6 @@
 use std::cell::RefCell;
 use wasm_bindgen::{prelude::*, JsCast};
-use maomi::{prelude::*, template::ComponentTemplate, BackendContext, mount_point::DynMountPoint, backend::Backend};
+use maomi::{prelude::*, template::ComponentTemplate, BackendContext, mount_point::DynMountPoint, backend::Backend, locale_string::LocaleString};
 use maomi_dom::prelude::*;
 
 mod components;
@@ -20,7 +20,7 @@ thread_local! {
 }
 
 pub(crate) trait PageMeta: PrerenderableComponent + ComponentTemplate<DomBackend> {
-    fn title(&self) -> &str;
+    fn title(&self) -> LocaleString;
 }
 
 /// Renders a prerenderable component in server side

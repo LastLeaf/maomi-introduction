@@ -5,13 +5,18 @@ use crate::components;
 use components::utils::link::Link;
 
 dom_css! {
-    // empty
+    @const $header_height: 100.px;
+
+    .icon {
+        height: $header_height;
+    }
 }
 
 #[component(Backend = DomBackend)]
 pub(crate) struct PageWrapper {
     template: template! {
         <header>
+            <img src="/res/icon.png" class:icon />
             <div> "maomi" </div>
             <Link path="/">
                 <div> "Introduction" </div>

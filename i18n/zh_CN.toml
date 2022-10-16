@@ -1,1 +1,21 @@
+[translation]
+"maomi" = "maomi"
+"Introduction" = "介绍"
+"Quick Start" = "快速入门"
+"Documents" = "文档"
+"GitHub" = "GitHub"
+"This website is powered by maomi. " = "这个网站基于 maomi 开发。"
+"Source code is here." = "看看源代码吧。"
+
 [index]
+"" = ""
+"maomi" = "maomi"
+"Strict and Performant Web Application Programing" = "严谨、高性能 Web 应用编程"
+"Better Performance" = "性能更优"
+"Programing in Rust" = "使用 Rust 语言开发"
+"Report Mistakes while Compilation" = "在编译期提示错误信息"
+"Work with rust-analyzer in IDE" = "通过 rust-analyzer 在 IDE 中提示错误"
+"Limited CSS" = "约束性 CSS"
+"High Performance Server Side Rendering" = "高性能服务器端渲染"
+"Integrated i18n Support" = "内置 i18n 国际化支持"
+"maomi - Strict and Performant Web Application Programing" = "maomi - 严谨、高性能 Web 应用编程"
