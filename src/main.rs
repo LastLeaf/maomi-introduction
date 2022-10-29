@@ -18,8 +18,8 @@ async fn main() {
         Ok::<_, Infallible>(service_fn(router::route))
     });
 
-    // init server on http://127.0.0.1:2080
-    let addr = SocketAddr::from(([127, 0, 0, 1], 2080));
+    // init server on http://localhost:2080
+    let addr: SocketAddr = "0.0.0.0:2080".parse().unwrap();
     let server = hyper::Server::bind(&addr).serve(make_svc);
 
     // start server
