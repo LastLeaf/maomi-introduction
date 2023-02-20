@@ -1,34 +1,34 @@
 use maomi::{prelude::*, locale_string::{LocaleString, LocaleStaticStr}};
 use maomi_dom::{prelude::*, element::*};
 
-dom_css! {
-    @import "/global.mcss";
+stylesheet! {
+    use crate::*;
 
-    @const $main_color: rgb(64, 64, 64);
-    @const $comment_color: rgb(128, 128, 128);
+    const MAIN_COLOR: value = rgb(64, 64, 64);
+    const COMMENT_COLOR: value = rgb(128, 128, 128);
 
-    .wrapper {
-        display: flex;
-        font-family: "consolas", monospace;
-        max-width: 100%;
+    class wrapper {
+        display = flex;
+        font_family = "consolas", monospace;
+        max_width = 100%;
     }
-    .left {
-        width: 5.px;
-        background-color: $icon_sub;
-        flex: none;
+    class left {
+        width = Px(5);
+        background_color = ICON_SUB;
+        flex = none;
     }
-    .block {
-        margin: 0.5.em 0 0.5.em 1.em;
-        overflow: auto;
+    class block {
+        margin = Em(0.5) 0 Em(0.5) Em(1);
+        overflow = auto;
     }
 
-    .line {
-        white-space: pre;
-        color: $main_color;
-        margin: 0 0.1.em;
+    class line {
+        white_space = pre;
+        color = main_color;
+        margin = 0 Em(0.1);
     }
-    .comment {
-        color: $comment_color;
+    class comment {
+        color = COMMENT_COLOR;
     }
 }
 

@@ -4,65 +4,65 @@ use maomi_dom::{prelude::*, element::*};
 use crate::components;
 use components::utils::link::*;
 
-dom_css! {
-    @import "/global.mcss";
+stylesheet! {
+    use crate::*;
 
-    .header_wrapper {
-        box-sizing: border-box;
-        height: 100.px;
-        font-size: 1.2.em;
-        line-height: 100.px;
-        white-space: nowrap;
-        padding: 0 20.px;
-        border-bottom: 5.px solid $icon_main;
-        color: $icon_main;
-        display: flex;
+    class header_wrapper {
+        box_sizing = border_box;
+        height = Px(100);
+        font_size = Em(1.2);
+        line_height = Px(100);
+        white_space = nowrap;
+        padding = 0 Px(20);
+        border_bottom = Px(5) solid ICON_MAIN;
+        color = ICON_MAIN;
+        display = flex;
     }
-    .icon {
-        height: 100%;
-        margin-right: 20.px;
-        @media (max-width: 600.px) {
-            margin-right: 5.px;
+    class icon {
+        height = 100%;
+        margin_right = Px(20);
+        if media (max_width = Px(600)) {
+            margin_right = Px(5);
         }
     }
-    .title {
-        flex: 1;
-        height: 100%;
-        font-size: 1.2.em;
-        letter-spacing: 0.2.em;
-        padding: 0 20.px;
-        @media (max-width: 800.px) {
-            display: none;
+    class title {
+        flex = 1;
+        height = 100%;
+        font_size = Em(1.2);
+        letter_spacing = Em(0.2);
+        padding = 0 Px(20);
+        if media (max_width = Px(800)) {
+            display = none;
         }
     }
-    .header_link {
-        padding: 0 20.px;
-        margin-left: 20.px;
-        @media (max-width: 600.px) {
-            padding-left: 10.px;
-            padding-right: 10.px;
-            margin-left: 5.px;
+    class header_link {
+        padding = 0 Px(20);
+        margin_left = Px(20);
+        if media (max_width = Px(600)) {
+            padding_left = Px(10);
+            padding_right = Px(10);
+            margin_left = Px(5);
         }
-        :hover {
-            background: $icon_sub;
+        if hover {
+            background = ICON_SUB;
         }
-    }
-
-    .main {
-        margin: 20.px 0;
-        padding: 0 10.px;
     }
 
-    .footer_wrapper {
-        padding: 10.px 20.px;
-        border-top: 5.px solid $icon_main;
-        color: rgb(128, 128, 128);
-        text-align: center;
-        font-size: 0.9.em;
-        background: $icon_sub;
+    class main {
+        margin = Px(20) 0;
+        padding = 0 Px(10);
     }
-    .footer_row {
-        margin: 0.5.em 0;
+
+    class footer_wrapper {
+        padding = Px(10) Px(20);
+        border_top = Px(5) solid ICON_MAIN;
+        color = rgb(128, 128, 128);
+        text_align = center;
+        font_size = Em(0.9);
+        background = ICON_SUB;
+    }
+    class footer_row {
+        margin = Em(0.5) 0;
     }
 }
 

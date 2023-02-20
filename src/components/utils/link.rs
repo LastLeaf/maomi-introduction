@@ -1,20 +1,31 @@
 use maomi::prelude::*;
 use maomi_dom::{prelude::*, element::*, event::*};
 
-dom_css! {
-    .inner {
-        text-decoration: none;
-        color: inherit;
+stylesheet! {
+    class inner {
+        text_decoration = none;
+        color = inherit;
     }
-    .underline {
-        text-decoration: underline;
+    class underline {
+        text_decoration = underline;
     }
 }
 
 #[component(Backend = DomBackend)]
 pub(crate) struct Link {
     template: template! {
-        <a class:inner href=&{ format!("{}?{}", self.path, self.query) } tap=@tap() click=@click()>
+        <a
+            class:inner
+            href=&{
+                if self.query.len() > 0 {
+                    format!("{}?{}", self.path, self.query)
+                } else {
+                    self.path.to_string()
+                }
+            }
+            tap=@tap()
+            click=@click()
+        >
             <slot />
         </a>
     },

@@ -8,69 +8,67 @@ use components::page_wrapper::PageWrapper;
 use components::utils::code_segment::*;
 use components::utils::link::RawLink;
 
-dom_css!(
-    @import "/global.mcss";
+stylesheet!(
+    use crate::*;
 
-    @macro text_style {
-        () => {
-            font-weight: normal;
-        };
+    fn text_style() {
+        font_weight = normal;
     }
-    @const $main_text_color: rgb(32, 32, 32);
-    @const $desc_color: rgb(64, 64, 64);
-    @const $note_color: rgb(128, 128, 128);
+    const MAIN_TEXT_COLOR: value = rgb(32, 32, 32);
+    const DESC_COLOR: value = rgb(64, 64, 64);
+    const NOTE_COLOR: value = rgb(128, 128, 128);
 
-    .title_section {
-        margin: 40.px 0;
+    class title_section {
+        margin = Px(40) 0;
     }
-    .title_icon {
-        display: block;
-        width: 160.px;
-        margin: 0 auto;
+    class title_icon {
+        display = block;
+        width = Px(160);
+        margin = 0 auto;
     }
-    .title {
-        text_style!();
-        text-align: center;
-        font-size: 2.em;
-        letter-spacing: 0.25.em;
-        margin: 0.5.em;
-        color: $icon_main;
+    class title {
+        text_style();
+        text_align = center;
+        font_size = Em(2);
+        letter_spacing = Em(0.25);
+        margin = Em(0.5);
+        color = ICON_MAIN;
     }
-    .subtitle {
-        text_style!();
-        text-align: center;
-        font-size: 1.2.em;
-        margin: 0 0 20.px;
-        color: $desc_color;
+    class subtitle {
+        text_style();
+        text_align = center;
+        font_size = Em(1.2);
+        margin = 0 0 Px(20);
+        color = DESC_COLOR;
     }
-    .title_code_wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    class title_code_wrapper {
+        display = flex;
+        flex_direction = column;
+        align_items = center;
     }
 
-    .section {
-        margin: 30.px auto;
-        max-width: 620.px;
+    class section {
+        margin = Px(30) auto;
+        max_width = Px(620);
     }
-    .section_title {
-        text_style!();
-        font-size: 1.3.em;
-        margin: 0 0 0.5.em;
-        color: $icon_main;
+    class section_title {
+        text_style();
+        font_size = Em(1.3);
+        margin = 0 0 Em(0.5);
+        color = ICON_MAIN;
     }
-    .section_desc {
-        text_style!();
-        color: $desc_color;
-        margin: 0 0 0.5.em;
+    class section_desc {
+        text_style();
+        color = desc_color;
+        margin = 0 0 Em(0.5);
     }
-    .section_img {}
-    .section_note {
-        font-size: 0.7.em;
-        color: $note_color;
-        margin: 0.5.em 0 0;
+    class section_img {}
+    class section_note {
+        font_size = Em(0.7);
+        color = NOTE_COLOR;
+        margin = Em(0.5) 0 0;
     }
-    .code_wrapper {}
+    class code_wrapper {}
 );
 
 // declare a component
@@ -132,7 +130,7 @@ pub(crate) struct Index {
             <div class:section>
                 <h2 class:section_title> "Better Performance" </h2>
                 <div class:section_desc>
-                    "Maomi is highly optimized. The performance is even better than hand-written JavaScript without any framework."
+                    "Maomi is optimized for speed. The performance is even better than hand-written JavaScript without any framework."
                 </div>
                 <img class:section_img src="" />
                 <div class:section_note>

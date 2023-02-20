@@ -42,3 +42,10 @@ console_error_panic_hook = "0.1"
 opt-level = "z"
 lto = true
 codegen-units = 1
+
+[package.metadata.wasm-pack.profile.release]
+# wasm-opt = false
+
+[package.metadata.maomi]
+css_out_dir = "pkg"
+# css-out-mode = "debug"
