@@ -47,5 +47,5 @@ codegen-units = 1
 # wasm-opt = false
 
 [package.metadata.maomi]
-css_out_dir = "pkg"
+css-out-dir = "pkg"
 # css-out-mode = "debug"

@@ -1,2 +1,2 @@
-const ICON_MAIN: value = rgb(232, 152, 86);
-const ICON_SUB: value = rgb(247, 218, 194);
+pub(crate) const ICON_MAIN: value = rgb(232, 152, 86);
+pub(crate) const ICON_SUB: value = rgb(247, 218, 194);
