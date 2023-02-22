@@ -1,6 +1,7 @@
 use std::fs;
 use hyper::{Body, Request, Response, Method, StatusCode};
 
+#[cfg(feature = "server-side-rendering")]
 use maomi_introduction::server_side_rendering;
 
 pub(crate) async fn route(req: Request<Body>) -> Result<Response<Body>, hyper::http::Error> {
@@ -28,19 +29,36 @@ pub(crate) async fn route(req: Request<Body>) -> Result<Response<Body>, hyper::h
             }
             // serve components
             let query = req.uri().query().unwrap_or_default();
-            match server_side_rendering(req_path, query).await {
-                Ok(html) => {
-                    return Response::builder()
-                        .status(StatusCode::OK)
-                        .header("Content-Type", "text/html")
-                        .body(Body::from(html));
+            #[cfg(feature = "server-side-rendering")]
+            {
+                match server_side_rendering(req_path, query).await {
+                    Ok(html) => {
+                        return Response::builder()
+                            .status(StatusCode::OK)
+                            .header("Content-Type", "text/html")
+                            .body(Body::from(html));
+                    }
+                    Err(status_code) => {
+                        return Response::builder()
+                            .status(status_code)
+                            .header("Content-Type", "text/plain")
+                            .body(Body::from(""));
+                    }
                 }
-                Err(status_code) => {
-                    return Response::builder()
-                        .status(status_code)
-                        .header("Content-Type", "text/plain")
-                        .body(Body::from(""));
-                }
+            }
+            #[cfg(not(feature = "server-side-rendering"))]
+            {
+                let html = format!(
+                    include_str!("component_html.tmpl"),
+                    title = "",
+                    body = "",
+                    req_path = req_path,
+                    data = query,
+                );
+                return Response::builder()
+                    .status(StatusCode::OK)
+                    .header("Content-Type", "text/html")
+                    .body(Body::from(html));
             }
         },
         _ => {}

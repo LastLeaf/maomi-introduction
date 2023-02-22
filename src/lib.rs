@@ -1,15 +1,19 @@
 use std::cell::RefCell;
-use wasm_bindgen::{prelude::*, JsCast};
-use maomi::{prelude::*, template::ComponentTemplate, BackendContext, mount_point::DynMountPoint, backend::Backend, locale_string::LocaleString};
+use maomi::{prelude::*, template::ComponentTemplate, BackendContext, mount_point::DynMountPoint, locale_string::LocaleString};
 use maomi_dom::prelude::*;
+#[cfg(target_arch = "wasm32")]
+use wasm_bindgen::{prelude::*, JsCast};
 
+#[cfg(any(feature = "server-side-rendering", target_arch = "wasm32"))]
 mod components;
 
+#[cfg(any(feature = "server-side-rendering", target_arch = "wasm32"))]
 macro_rules! route {
     ("/") => { components::index::Index };
 }
 
 thread_local! {
+    #[cfg(target_arch = "wasm32")]
     static HISTORY: web_sys::History = {
         let window = web_sys::window().unwrap();
         init_pop_state_listener(&window);
@@ -25,6 +29,7 @@ pub(crate) trait PageMeta: PrerenderableComponent + ComponentTemplate<DomBackend
 
 /// Renders a prerenderable component in server side
 #[cfg(not(target_arch = "wasm32"))]
+#[cfg(feature = "server-side-rendering")]
 pub async fn server_side_rendering(
     req_path: &str,
     query_str: &str,
@@ -36,6 +41,7 @@ pub async fn server_side_rendering(
 }
 
 #[cfg(not(target_arch = "wasm32"))]
+#[cfg(feature = "server-side-rendering")]
 async fn render_component<T>(
     req_path: &str,
     query_str: &str,
@@ -54,6 +60,7 @@ where
 }
 
 #[cfg(not(target_arch = "wasm32"))]
+#[cfg(feature = "server-side-rendering")]
 fn prerender_component_html<T>(
     req_path: &str,
     prerendering_data: maomi::PrerenderingData<T>,
@@ -89,15 +96,28 @@ where
 }
 
 /// Init the server side rendering result in browser
+#[cfg(target_arch = "wasm32")]
 #[wasm_bindgen]
-pub fn server_side_rendering_init(req_path: &str, base64_data: &str) {
-    let data = base64::decode(base64_data).unwrap();
-    match req_path {
-        "/" => server_side_rendering_apply::<route!("/")>(data),
-        _ => panic!("Invalid server side rendering path"),
+pub fn html_init(req_path: &str, data: &str) {
+    #[cfg(feature = "server-side-rendering")]
+    {
+        let data = base64::decode(data).unwrap();
+        match req_path {
+            "/" => server_side_rendering_apply::<route!("/")>(data),
+            _ => panic!("Invalid server side rendering path"),
+        }
+    }
+    #[cfg(not(feature = "server-side-rendering"))]
+    {
+        let dom_backend = DomBackend::new_with_document_body().unwrap();
+        let backend_context = BackendContext::new(dom_backend);
+        BACKEND_CONTEXT.with(|x| *x.borrow_mut() = Some(backend_context));
+        client_side_rendering(req_path, data).unwrap();
     }
 }
 
+#[cfg(target_arch = "wasm32")]
+#[cfg(feature = "server-side-rendering")]
 fn server_side_rendering_apply<T>(bin: Vec<u8>)
 where
     T: PageMeta,
@@ -122,19 +142,24 @@ where
 }
 
 /// jump to another page, doing a client side rendering
+#[allow(dead_code)]
 pub(crate) fn jump_to(
-    req_path: &str,
-    query_str: &str,
+    _req_path: &str,
+    _query_str: &str,
 ) {
-    let url = format!("{}?{}", req_path, query_str);
-    HISTORY.with(|history| {
-        history.push_state_with_url(&JsValue::NULL, "", Some(&url)).unwrap();
-    });
-    if let Err(err) = client_side_rendering(req_path, query_str) {
-        log::error!("{}", err);
+    #[cfg(target_arch = "wasm32")]
+    {
+        let url = format!("{}?{}", _req_path, _query_str);
+        HISTORY.with(|history| {
+            history.push_state_with_url(&JsValue::NULL, "", Some(&url)).unwrap();
+        });
+        if let Err(err) = client_side_rendering(_req_path, _query_str) {
+            log::error!("{}", err);
+        }
     }
 }
 
+#[cfg(target_arch = "wasm32")]
 fn init_pop_state_listener(window: &web_sys::Window) {
     let closure = Closure::<dyn Fn()>::new(move || {
         let location = web_sys::window().unwrap().document().unwrap().location().unwrap();
@@ -147,6 +172,7 @@ fn init_pop_state_listener(window: &web_sys::Window) {
     window.add_event_listener_with_callback("popstate", closure.unchecked_ref()).unwrap();
 }
 
+#[cfg(target_arch = "wasm32")]
 fn client_side_rendering(
     req_path: &str,
     query_str: &str,
@@ -157,6 +183,7 @@ fn client_side_rendering(
     }
 }
 
+#[cfg(target_arch = "wasm32")]
 fn jump_to_component<T>(
     query_str: &str,
 ) -> Result<(), String>
@@ -165,11 +192,12 @@ where
     T::QueryData: serde::de::DeserializeOwned,
     T::PrerenderingData: serde::Serialize,
 {
+    use maomi::backend::Backend;
     let query_data: T::QueryData = match serde_urlencoded::from_str(query_str) {
         Ok(x) => x,
         Err(_) => return Err("bad request".into()),
     };
-    DomBackend::async_task(async move {
+    maomi_dom::DomBackend::async_task(async move {
         let prerendering_data = BackendContext::<DomBackend>::prerendering_data::<T>(&query_data).await;
         BACKEND_CONTEXT.with(|backend_context| {
             let ret = backend_context

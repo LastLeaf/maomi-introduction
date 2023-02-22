@@ -84,9 +84,11 @@ impl CodeLine {
 #[component(Backend = DomBackend)]
 pub(crate) struct CodeComment {
     template: template! {
-        <div class:line class:comment> { &self.text } </div>
+        <div class:line class:comment> { &self.whole_text } </div>
     },
     pub text: Prop<LocaleStaticStr>,
+    pub indent: Prop<u32>,
+    whole_text: LocaleString,
 }
 
 // implement basic component interfaces
@@ -95,6 +97,16 @@ impl Component for CodeComment {
         Self {
             template: Default::default(),
             text: Default::default(),
+            indent: Default::default(),
+            whole_text: Default::default(),
         }
+    }
+
+    fn before_template_apply(&mut self) {
+        let mut s = String::new();
+        for _ in 0..*self.indent {
+            s += " ";
+        }
+        self.whole_text = LocaleString::translated(format!("{}// {}", s, self.text));
     }
 }

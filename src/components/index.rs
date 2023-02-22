@@ -98,10 +98,10 @@ pub(crate) struct Index {
                 </div>
                 <div class:code_wrapper>
                     <CodeSegment>
-                        <CodeComment text=&{ i18n!(r#"// declare a component"#) } />
+                        <CodeComment indent=0 text=&{ i18n!(index, r#"declare a component"#) } />
                         <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
                         <CodeLine text=r#"struct HelloWorld {"# />
-                        <CodeComment text=&{ i18n!(r#"    // write a template"#) } />
+                        <CodeComment indent=4 text=&{ i18n!(index, r#"write a template"#) } />
                         <CodeLine text=r#"    template: template! {"# />
                         <CodeLine text=r#"        <div class:hello>"# />
                         <CodeLine text=r#"            "Hello world!""# />
@@ -109,7 +109,7 @@ pub(crate) struct Index {
                         <CodeLine text=r#"    }"# />
                         <CodeLine text=r#"}"# />
                         <CodeLine text=r#""# />
-                        <CodeComment text=&{ i18n!(r#"// implement component trait"#) } />
+                        <CodeComment indent=0 text=&{ i18n!(index, r#"implement Component trait"#) } />
                         <CodeLine text=r#"impl Component for HelloWorld {"# />
                         <CodeLine text=r#"    fn new() -> Self {"# />
                         <CodeLine text=r#"        Self {"# />
@@ -118,10 +118,10 @@ pub(crate) struct Index {
                         <CodeLine text=r#"    }"# />
                         <CodeLine text=r#"}"# />
                         <CodeLine text=r#""# />
-                        <CodeComment text=&{ i18n!(r#"// write styles"#) } />
-                        <CodeLine text=r#"dom_css! {"# />
-                        <CodeLine text=r#"    .hello {"# />
-                        <CodeLine text=r#"        color: rgb(232, 152, 86);"# />
+                        <CodeComment indent=0 text=&{ i18n!(index, r#"write styles"#) } />
+                        <CodeLine text=r#"stylesheet! {"# />
+                        <CodeLine text=r#"    class hello {"# />
+                        <CodeLine text=r#"        color = rgb(232, 152, 86);"# />
                         <CodeLine text=r#"    }"# />
                         <CodeLine text=r#"}"# />
                     </_>
@@ -134,7 +134,7 @@ pub(crate) struct Index {
                 </div>
                 <img class:section_img src="" />
                 <div class:section_note>
-                    "This DOM manipulation timing benchmark is based on "
+                    "This DOM manipulation benchmark is based on "
                     <RawLink underline new_page url="https://github.com/krausest/js-framework-benchmark">
                         "js-framework-benchmark"
                     </RawLink>
@@ -143,7 +143,7 @@ pub(crate) struct Index {
             <div class:section>
                 <h2 class:section_title> "Report Mistakes while Compilation" </h2>
                 <div class:section_desc>
-                    "Like rust, maomi reports mistakes while compilation. The mistakes include wrong element names, invalid properties, and even unmatched style class names."
+                    "Like rust, maomi reports mistakes while compilation. The mistakes include wrong element names, invalid properties, and even wrong style class names."
                 </div>
                 <img class:section_img src="" />
             </div>
@@ -165,7 +165,7 @@ pub(crate) struct Index {
                         <CodeLine text=r#"struct HelloWorld {"# />
                         <CodeLine text=r#"    template: template! {"# />
                         <CodeLine text=r#"        <div class:hello>"# />
-                        <CodeComment text=&{ i18n!(r#"            // use struct fields in the template"#) } />
+                        <CodeComment indent=12 text=&{ i18n!(index, "use struct fields in the template") } />
                         <CodeLine text=r#"            { &self.hello }"# />
                         <CodeLine text=r#"        </div>"# />
                         <CodeLine text=r#"    },"# />
@@ -177,15 +177,15 @@ pub(crate) struct Index {
             <div class:section>
                 <h2 class:section_title> "Limited CSS" </h2>
                 <div class:section_desc>
-                    "Maomi supports a limited CSS-like syntax. It restricts the usage of CSS to make the styling easier to investigate."
+                    "Maomi supports a limited stylesheet syntax. It restricts the usage of CSS to make the styling easier to investigate."
                 </div>
                 <div class:code_wrapper>
                     <CodeSegment>
-                        <CodeLine text=r#"dom_css! {"# />
-                        <CodeLine text=r#"    .hello {"# />
-                        <CodeLine text=r#"        color: rgb(232, 152, 86);"# />
-                        <CodeLine text=r#"        :hover {"# />
-                        <CodeLine text=r#"            text-decoration: underline;"# />
+                        <CodeLine text=r#"stylesheet! {"# />
+                        <CodeLine text=r#"    class hello {"# />
+                        <CodeLine text=r#"        color = rgb(232, 152, 86);"# />
+                        <CodeLine text=r#"        if hover {"# />
+                        <CodeLine text=r#"            text_decoration = underline;"# />
                         <CodeLine text=r#"        }"# />
                         <CodeLine text=r#"    }"# />
                         <CodeLine text=r#"}"# />
@@ -210,16 +210,12 @@ pub(crate) struct Index {
     },
 }
 
-// implement basic component interfaces
 impl Component for Index {
     fn new() -> Self {
         Self {
             template: Default::default(),
         }
     }
-}
-
-impl Index {
 }
 
 #[async_trait]

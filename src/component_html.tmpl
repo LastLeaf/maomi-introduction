@@ -11,7 +11,7 @@
   <script src="/pkg/maomi_introduction.js"></script>
   <script>
     wasm_bindgen('/pkg/maomi_introduction_bg.wasm').then(function() {{
-      wasm_bindgen.server_side_rendering_init('{req_path}', '{data}')
+      wasm_bindgen.html_init('{req_path}', '{data}')
     }})
   </script>
 </html>
