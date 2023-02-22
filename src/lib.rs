@@ -9,6 +9,7 @@ mod components;
 
 #[cfg(any(feature = "server-side-rendering", target_arch = "wasm32"))]
 macro_rules! route {
+    ("") => { components::not_found::NotFound };
     ("/") => { components::index::Index };
 }
 
@@ -36,7 +37,7 @@ pub async fn server_side_rendering(
 ) -> Result<String, hyper::StatusCode> {
     match req_path {
         "/" => render_component::<route!("/")>(req_path, query_str).await,
-        _ => Err(hyper::StatusCode::NOT_FOUND),
+        _ => render_component::<route!("")>(req_path, query_str).await,
     }
 }
 
@@ -104,7 +105,7 @@ pub fn html_init(req_path: &str, data: &str) {
         let data = base64::decode(data).unwrap();
         match req_path {
             "/" => server_side_rendering_apply::<route!("/")>(data),
-            _ => panic!("Invalid server side rendering path"),
+            _ => server_side_rendering_apply::<route!("")>(data),
         }
     }
     #[cfg(not(feature = "server-side-rendering"))]
@@ -149,7 +150,11 @@ pub(crate) fn jump_to(
 ) {
     #[cfg(target_arch = "wasm32")]
     {
-        let url = format!("{}?{}", _req_path, _query_str);
+        let url = if _query_str.len() > 0 {
+            format!("{}?{}", _req_path, _query_str)
+        } else {
+            format!("{}", _req_path)
+        };
         HISTORY.with(|history| {
             history.push_state_with_url(&JsValue::NULL, "", Some(&url)).unwrap();
         });
@@ -164,7 +169,13 @@ fn init_pop_state_listener(window: &web_sys::Window) {
     let closure = Closure::<dyn Fn()>::new(move || {
         let location = web_sys::window().unwrap().document().unwrap().location().unwrap();
         let req_path = location.pathname().unwrap_or("".to_string());
-        let search = location.search().unwrap_or("".to_string());
+        let search = location.search();
+        let search = match search.as_ref() {
+            Ok(x) if x.len() == 0 => "?",
+            Err(_) => "?",
+            Ok(x) => x,
+        };
+        log::warn!("!!! {:?} {:?}", req_path, search);
         if let Err(err) = client_side_rendering(&req_path, &search[1..]) {
             log::error!("{}", err);
         }
@@ -179,7 +190,7 @@ fn client_side_rendering(
 ) -> Result<(), String> {
     match req_path {
         "/" => jump_to_component::<route!("/")>(query_str),
-        _ => Err("Invalid rendering path".into()),
+        _ => jump_to_component::<route!("")>(query_str),
     }
 }
 
@@ -211,6 +222,10 @@ where
                         }
                     });
                     let mount_point = ctx.prerendering_attach(prerendering_data).unwrap();
+                    mount_point.root_component().rc().task_with(|this, _| {
+                        let title = this.title();
+                        web_sys::window().unwrap().document().unwrap().set_title(&title);
+                    });
                     CURRENT_MOUNT_POINT.with(|x| {
                         *x.borrow_mut() = Some(mount_point.into_dyn());
                     });

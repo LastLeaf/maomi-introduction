@@ -9,6 +9,7 @@
 " | " = " | "
 "crates.io" = "crates.io"
 "lastleaf.me" = "lastleaf.me"
+"Not Found" = "页面未找到"
 
 [index]
 "" = ""
@@ -22,7 +23,7 @@
 "High Performance Server Side Rendering" = "高性能服务器端渲染"
 "Integrated i18n Support" = "内置 i18n 国际化支持"
 "maomi - Strict and Performant Web Application Programing" = "maomi - 严谨、高性能 Web 应用编程"
-"Write rust code, compile to WebAssembly, and run in browser." = "编写 rust 代码、编译到 WebAssembly 、在浏览器中运行"
+"Write rust code, compile to WebAssembly, and run in browser." = "编写 rust 代码、编译到 WebAssembly 、在浏览器中运行。"
 "declare a component" = "定义组件"
 "write a template" = "添加组件模板"
 "implement Component trait" = "实现 Component trait"

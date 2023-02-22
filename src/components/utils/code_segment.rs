@@ -4,13 +4,14 @@ use maomi_dom::{prelude::*, element::*};
 stylesheet! {
     use crate::*;
 
-    const MAIN_COLOR: value = rgb(64, 64, 64);
+    const MAIN_COLOR: value = rgb(96, 96, 96);
     const COMMENT_COLOR: value = rgb(128, 128, 128);
 
     class wrapper {
         display = flex;
         font_family = "consolas", monospace;
         max_width = 100%;
+        color = MAIN_COLOR;
     }
     class left {
         width = Px(5);
