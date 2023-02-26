@@ -4,7 +4,7 @@ use maomi_dom::{prelude::*, element::*};
 stylesheet! {
     use crate::*;
 
-    const MAIN_COLOR: value = rgb(96, 96, 96);
+    const MAIN_COLOR: value = rgb(64, 64, 64);
     const COMMENT_COLOR: value = rgb(128, 128, 128);
 
     class wrapper {
@@ -25,7 +25,7 @@ stylesheet! {
 
     class line {
         white_space = pre;
-        color = main_color;
+        color = MAIN_COLOR;
         margin = 0 Em(0.1);
     }
     class comment {
@@ -45,7 +45,6 @@ pub(crate) struct CodeSegment {
     },
 }
 
-// implement basic component interfaces
 impl Component for CodeSegment {
     fn new() -> Self {
         Self {
@@ -62,7 +61,6 @@ pub(crate) struct CodeLine {
     pub text: Prop<String>,
 }
 
-// implement basic component interfaces
 impl Component for CodeLine {
     fn new() -> Self {
         Self {
@@ -92,7 +90,6 @@ pub(crate) struct CodeComment {
     whole_text: LocaleString,
 }
 
-// implement basic component interfaces
 impl Component for CodeComment {
     fn new() -> Self {
         Self {

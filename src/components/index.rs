@@ -1,5 +1,4 @@
-use maomi::locale_string::LocaleString;
-use maomi::{prelude::*};
+use maomi::{prelude::*, locale_string::LocaleString};
 use maomi_dom::{prelude::*, element::*};
 
 use crate::PageMeta;
@@ -71,7 +70,6 @@ stylesheet!(
     class code_wrapper {}
 );
 
-// declare a component
 #[component(Backend = DomBackend, Translation = index)]
 pub(crate) struct Index {
     template: template! {

@@ -8,9 +8,14 @@ use wasm_bindgen::{prelude::*, JsCast};
 mod components;
 
 #[cfg(any(feature = "server-side-rendering", target_arch = "wasm32"))]
-macro_rules! route {
-    ("") => { components::not_found::NotFound };
-    ("/") => { components::index::Index };
+type DefaultComponent = components::not_found::NotFound;
+
+#[cfg(any(feature = "server-side-rendering", target_arch = "wasm32"))]
+macro_rules! for_each_route {
+    ($mac:ident) => {
+        $mac!("/", components::index::Index);
+        $mac!("/guide", components::guide::write_a_component::Content);
+    };
 }
 
 thread_local! {
@@ -35,10 +40,15 @@ pub async fn server_side_rendering(
     req_path: &str,
     query_str: &str,
 ) -> Result<String, hyper::StatusCode> {
-    match req_path {
-        "/" => render_component::<route!("/")>(req_path, query_str).await,
-        _ => render_component::<route!("")>(req_path, query_str).await,
+    macro_rules! route {
+        ($p:expr, $c:ty) => {
+            if (req_path == $p) {
+                return render_component::<$c>(req_path, query_str).await;
+            }
+        };
     }
+    for_each_route!(route);
+    return render_component::<DefaultComponent>(req_path, query_str).await;
 }
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -103,10 +113,15 @@ pub fn html_init(req_path: &str, data: &str) {
     #[cfg(feature = "server-side-rendering")]
     {
         let data = base64::decode(data).unwrap();
-        match req_path {
-            "/" => server_side_rendering_apply::<route!("/")>(data),
-            _ => server_side_rendering_apply::<route!("")>(data),
+        macro_rules! route {
+            ($p:expr, $c:ty) => {
+                if (req_path == $p) {
+                    return server_side_rendering_apply::<$c>(data);
+                }
+            };
         }
+        for_each_route!(route);
+        return server_side_rendering_apply::<DefaultComponent>(data);
     }
     #[cfg(not(feature = "server-side-rendering"))]
     {
@@ -188,10 +203,15 @@ fn client_side_rendering(
     req_path: &str,
     query_str: &str,
 ) -> Result<(), String> {
-    match req_path {
-        "/" => jump_to_component::<route!("/")>(query_str),
-        _ => jump_to_component::<route!("")>(query_str),
+    macro_rules! route {
+        ($p:expr, $c:ty) => {
+            if (req_path == $p) {
+                return jump_to_component::<$c>(query_str);
+            }
+        };
     }
+    for_each_route!(route);
+    return jump_to_component::<DefaultComponent>(query_str);
 }
 
 #[cfg(target_arch = "wasm32")]

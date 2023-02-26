@@ -13,7 +13,6 @@ stylesheet!(
     }
 );
 
-// declare a component
 #[component(Backend = DomBackend)]
 pub(crate) struct NotFound {
     template: template! {

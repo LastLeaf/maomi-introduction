@@ -33,7 +33,6 @@ pub(crate) struct Link {
     pub query: Prop<String>,
 }
 
-// implement basic component interfaces
 impl Component for Link {
     fn new() -> Self {
         Self {
@@ -73,7 +72,6 @@ pub(crate) struct RawLink {
     pub underline: Prop<bool>,
 }
 
-// implement basic component interfaces
 impl Component for RawLink {
     fn new() -> Self {
         Self {

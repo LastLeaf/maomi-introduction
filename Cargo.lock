@@ -401,6 +401,7 @@ name = "maomi-dom-macro"
 version = "0.4.0"
 dependencies = [
  "maomi-skin",
+ "maomi-tools",
  "once_cell",
  "proc-macro2",
  "quote",
@@ -434,26 +435,36 @@ name = "maomi-macro"
 version = "0.4.0"
 dependencies = [
  "maomi-skin",
+ "maomi-tools",
  "once_cell",
  "proc-macro2",
  "quote",
  "rustc-hash",
- "serde",
  "syn",
- "toml 0.5.9",
+ "toml",
 ]
 
 [[package]]
 name = "maomi-skin"
 version = "0.4.0"
 dependencies = [
+ "maomi-tools",
  "once_cell",
  "proc-macro2",
  "quote",
  "rustc-hash",
- "serde",
  "syn",
- "toml 0.7.2",
+]
+
+[[package]]
+name = "maomi-tools"
+version = "0.4.0"
+dependencies = [
+ "log",
+ "once_cell",
+ "rustc-hash",
+ "serde",
+ "toml",
 ]
 
 [[package]]
@@ -495,15 +506,6 @@ dependencies = [
  "log",
  "wasi",
  "windows-sys",
-]
-
-[[package]]
-name = "nom8"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ae01545c9c7fc4486ab7debaf2aad7003ac19431791868fb2e8066df97fad2f8"
-dependencies = [
- "memchr",
 ]
 
 [[package]]
@@ -767,15 +769,6 @@ dependencies = [
 
 [[package]]
 name = "toml"
-version = "0.5.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8d82e1a7758622a465f8cee077614c73484dac5b836c02ff6a40d5d1010324d7"
-dependencies = [
- "serde",
-]
-
-[[package]]
-name = "toml"
 version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f7afcae9e3f0fe2c370fd4657108972cbb2fa9db1b9f84849cefd80741b01cb6"
@@ -797,15 +790,15 @@ dependencies = [
 
 [[package]]
 name = "toml_edit"
-version = "0.19.3"
+version = "0.19.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e6a7712b49e1775fb9a7b998de6635b299237f48b404dde71704f2e0e7f37e5"
+checksum = "9a1eb0622d28f4b9c90adc4ea4b2b46b47663fde9ac5fafcb14a1369d5508825"
 dependencies = [
  "indexmap",
- "nom8",
  "serde",
  "serde_spanned",
  "toml_datetime",
+ "winnow",
 ]
 
 [[package]]
@@ -1032,3 +1025,12 @@ name = "windows_x86_64_msvc"
 version = "0.36.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c811ca4a8c853ef420abd8592ba53ddbbac90410fab6903b3e79972a631f7680"
+
+[[package]]
+name = "winnow"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "efdd927d1a3d5d98abcfc4cf8627371862ee6abfe52a988050621c50c66b4493"
+dependencies = [
+ "memchr",
+]

@@ -17,12 +17,16 @@ stylesheet! {
         border_bottom = Px(5) solid ICON_MAIN;
         color = ICON_MAIN;
         display = flex;
+        overflow = hidden;
     }
     class icon {
         height = 100%;
         margin_right = Px(20);
         if media (max_width = Px(600)) {
             margin_right = Px(5);
+        }
+        if media (max_width = Px(540)) {
+            display = none;
         }
     }
     class title {
@@ -78,14 +82,14 @@ pub(crate) struct PageWrapper {
                 </Link>
             </div>
             <div class:header_link>
-                <Link path="/quick-start">
-                    <div> "Quick Start" </div>
+                <Link path="/guide">
+                    <div> "Guide" </div>
                 </Link>
             </div>
             <div class:header_link>
-                <Link path="/documents">
+                <RawLink new_page url="https://docs.rs/maomi/latest/maomi/">
                     <div> "Documents" </div>
-                </Link>
+                </RawLink>
             </div>
         </header>
         <div class:main>
@@ -113,14 +117,10 @@ pub(crate) struct PageWrapper {
     },
 }
 
-// implement basic component interfaces
 impl Component for PageWrapper {
     fn new() -> Self {
         Self {
             template: Default::default(),
         }
     }
-}
-
-impl PageWrapper {
 }
