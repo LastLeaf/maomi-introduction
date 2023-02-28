@@ -1,10 +1,14 @@
 use maomi::{prelude::*, locale_string::LocaleStaticStr};
 use maomi_dom::{prelude::*, element::*};
 
-pub(crate) mod write_a_component;
 use crate::components;
 use components::utils::link::*;
 use components::page_wrapper::PageWrapper;
+
+pub(crate) mod write_a_component;
+pub(crate) mod template_semantics;
+
+i18n_group!(guide as trans);
 
 stylesheet! {
     use crate::*;
@@ -62,12 +66,14 @@ stylesheet! {
     }
     class prev {
         flex = 0 0 auto;
+        color = ICON_MAIN;
     }
     class footer_center {
         flex = 1;
     }
     class next {
         flex = 0 0 auto;
+        color = ICON_MAIN;
     }
 
     class section {
@@ -76,13 +82,13 @@ stylesheet! {
     class section_title {
         text_style();
         font_size = Em(1.3);
-        margin = 0 0 Em(0.5);
+        margin = Em(0.5) 0;
         color = ICON_MAIN;
     }
     class section_desc {
         text_style();
         color = desc_color;
-        margin = 0 0 Em(0.5);
+        margin = Em(0.5) 0;
     }
     class section_img {}
     class code_wrapper {}
@@ -141,8 +147,8 @@ impl Component for GuideWrapper {
         Self {
             template: Default::default(),
             chapters: vec![
-                Chapter { path: "/guide", title: i18n!(guide, "Write a Component") },
-                Chapter { path: "/", title: i18n!(guide, "……") },
+                Chapter { path: "/guide", title: trans!("Write a Component") },
+                Chapter { path: "/guide/template-semantics", title: trans!("Template Semantics") },
             ],
             cur_chapter_path: Default::default(),
             cur_chapter_index: 0,

@@ -1,4 +1,4 @@
-use maomi::{prelude::*, locale_string::LocaleString};
+use maomi::{prelude::*, locale_string::*};
 use maomi_dom::{prelude::*, element::*};
 
 use crate::PageMeta;

@@ -4,8 +4,10 @@ use maomi_dom::{prelude::*, element::*};
 stylesheet! {
     use crate::*;
 
-    const MAIN_COLOR: value = rgb(64, 64, 64);
+    const MAIN_COLOR: value = rgb(96, 96, 96);
     const COMMENT_COLOR: value = rgb(128, 128, 128);
+    const ERROR_COLOR: value = rgb(192, 0, 0);
+    const CORRECT_COLOR: value = rgb(0, 128, 0);
 
     class wrapper {
         display = flex;
@@ -30,6 +32,13 @@ stylesheet! {
     }
     class comment {
         color = COMMENT_COLOR;
+    }
+
+    class error {
+        color = ERROR_COLOR;
+    }
+    class correct {
+        color = CORRECT_COLOR;
     }
 }
 
@@ -56,9 +65,15 @@ impl Component for CodeSegment {
 #[component(Backend = DomBackend)]
 pub(crate) struct CodeLine {
     template: template! {
-        <div class:line> { &Self::filtered_text(&self.text) } </div>
+        <div
+            class:line
+            class:error={ &*self.error }
+            class:correct={ &*self.correct }
+        > { &Self::filtered_text(&self.text) } </div>
     },
     pub text: Prop<String>,
+    pub error: Prop<bool>,
+    pub correct: Prop<bool>,
 }
 
 impl Component for CodeLine {
@@ -66,6 +81,8 @@ impl Component for CodeLine {
         Self {
             template: Default::default(),
             text: Default::default(),
+            error: Default::default(),
+            correct: Default::default(),
         }
     }
 }
@@ -83,10 +100,17 @@ impl CodeLine {
 #[component(Backend = DomBackend)]
 pub(crate) struct CodeComment {
     template: template! {
-        <div class:line class:comment> { &self.whole_text } </div>
+        <div
+            class:line
+            class:comment
+            class:error={ &*self.error }
+            class:correct={ &*self.correct }
+        > { &self.whole_text } </div>
     },
     pub text: Prop<LocaleStaticStr>,
     pub indent: Prop<u32>,
+    pub error: Prop<bool>,
+    pub correct: Prop<bool>,
     whole_text: LocaleString,
 }
 
@@ -96,6 +120,8 @@ impl Component for CodeComment {
             template: Default::default(),
             text: Default::default(),
             indent: Default::default(),
+            error: Default::default(),
+            correct: Default::default(),
             whole_text: Default::default(),
         }
     }

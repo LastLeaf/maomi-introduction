@@ -1,4 +1,4 @@
-use maomi::{prelude::*, locale_string::LocaleString};
+use maomi::{prelude::*, locale_string::*};
 use maomi_dom::{prelude::*, element::*};
 
 use crate::PageMeta;
@@ -6,6 +6,8 @@ use crate::components;
 use components::page_wrapper::PageWrapper;
 use components::utils::code_segment::*;
 use components::utils::link::RawLink;
+
+i18n_group!(index as trans);
 
 stylesheet!(
     use crate::*;
@@ -96,10 +98,10 @@ pub(crate) struct Index {
                 </div>
                 <div class:code_wrapper>
                     <CodeSegment>
-                        <CodeComment indent=0 text=&{ i18n!(index, r#"declare a component"#) } />
+                        <CodeComment indent=0 text=&{ trans!(r#"declare a component"#) } />
                         <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
                         <CodeLine text=r#"struct HelloWorld {"# />
-                        <CodeComment indent=4 text=&{ i18n!(index, r#"write a template"#) } />
+                        <CodeComment indent=4 text=&{ trans!(r#"write a template"#) } />
                         <CodeLine text=r#"    template: template! {"# />
                         <CodeLine text=r#"        <div class:hello>"# />
                         <CodeLine text=r#"            "Hello world!""# />
@@ -107,7 +109,7 @@ pub(crate) struct Index {
                         <CodeLine text=r#"    }"# />
                         <CodeLine text=r#"}"# />
                         <CodeLine text=r#""# />
-                        <CodeComment indent=0 text=&{ i18n!(index, r#"implement Component trait"#) } />
+                        <CodeComment indent=0 text=&{ trans!(r#"implement Component trait"#) } />
                         <CodeLine text=r#"impl Component for HelloWorld {"# />
                         <CodeLine text=r#"    fn new() -> Self {"# />
                         <CodeLine text=r#"        Self {"# />
@@ -116,7 +118,7 @@ pub(crate) struct Index {
                         <CodeLine text=r#"    }"# />
                         <CodeLine text=r#"}"# />
                         <CodeLine text=r#""# />
-                        <CodeComment indent=0 text=&{ i18n!(index, r#"write styles"#) } />
+                        <CodeComment indent=0 text=&{ trans!(r#"write styles"#) } />
                         <CodeLine text=r#"stylesheet! {"# />
                         <CodeLine text=r#"    class hello {"# />
                         <CodeLine text=r#"        color = rgb(232, 152, 86);"# />
@@ -163,7 +165,7 @@ pub(crate) struct Index {
                         <CodeLine text=r#"struct HelloWorld {"# />
                         <CodeLine text=r#"    template: template! {"# />
                         <CodeLine text=r#"        <div class:hello>"# />
-                        <CodeComment indent=12 text=&{ i18n!(index, "use struct fields in the template") } />
+                        <CodeComment indent=12 text=&{ trans!("use struct fields in the template") } />
                         <CodeLine text=r#"            { &self.hello }"# />
                         <CodeLine text=r#"        </div>"# />
                         <CodeLine text=r#"    },"# />
@@ -232,6 +234,6 @@ impl PrerenderableComponent for Index {
 
 impl PageMeta for Index {
     fn title(&self) -> LocaleString {
-        i18n!(index, "maomi - Strict and Performant Web Application Programing").to_locale_string()
+        trans!("maomi - Strict and Performant Web Application Programing").to_locale_string()
     }
 }

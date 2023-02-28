@@ -15,6 +15,7 @@ macro_rules! for_each_route {
     ($mac:ident) => {
         $mac!("/", components::index::Index);
         $mac!("/guide", components::guide::write_a_component::Content);
+        $mac!("/guide/template-semantics", components::guide::template_semantics::Content);
     };
 }
 
