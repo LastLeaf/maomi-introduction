@@ -17,7 +17,7 @@ pub(crate) struct Content {
             <div class:section>
                 <h2 class:section_title> "Add dependencies in Cargo.toml" </h2>
                 <p class:section_desc>
-                    "To use maomi, add maomi as cargo dependencies. In Cargo.toml:"
+                    "To use maomi, rust 1.65+ is required. Then add maomi as cargo dependencies. In Cargo.toml:"
                 </p>
                 <CodeSegment>
                     <CodeLine text=r#"[package]"# />
