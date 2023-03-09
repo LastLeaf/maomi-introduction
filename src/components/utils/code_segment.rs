@@ -4,16 +4,16 @@ use maomi_dom::{prelude::*, element::*};
 stylesheet! {
     use crate::*;
 
-    const MAIN_COLOR: value = rgb(96, 96, 96);
     const COMMENT_COLOR: value = rgb(128, 128, 128);
-    const ERROR_COLOR: value = rgb(192, 0, 0);
-    const CORRECT_COLOR: value = rgb(0, 128, 0);
+    const EMPHASIZE_COLOR: value = rgb(0, 107, 202);
+    const CORRECT_COLOR: value = rgb(0, 155, 61);
+    const ERROR_COLOR: value = rgb(217, 48, 9);
 
     class wrapper {
         display = flex;
         font_family = "consolas", monospace;
         max_width = 100%;
-        color = MAIN_COLOR;
+        color = TEXT_SUB;
     }
     class left {
         width = Px(5);
@@ -27,13 +27,16 @@ stylesheet! {
 
     class line {
         white_space = pre;
-        color = MAIN_COLOR;
+        color = TEXT_SUB;
         margin = 0 Em(0.1);
     }
     class comment {
         color = COMMENT_COLOR;
     }
 
+    class emphasize {
+        color = EMPHASIZE_COLOR;
+    }
     class error {
         color = ERROR_COLOR;
     }
@@ -41,6 +44,22 @@ stylesheet! {
         color = CORRECT_COLOR;
     }
 }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub(crate) enum CodeEm {
+    None,
+    Emphasize,
+    Correct,
+    Wrong,
+}
+
+impl Default for CodeEm {
+    fn default() -> Self {
+        Self::None
+    }
+}
+
+pub(crate) use CodeEm::{Emphasize, Correct, Wrong};
 
 #[component(Backend = DomBackend)]
 pub(crate) struct CodeSegment {
@@ -67,13 +86,13 @@ pub(crate) struct CodeLine {
     template: template! {
         <div
             class:line
-            class:error={ &*self.error }
-            class:correct={ &*self.correct }
+            class:emphasize=&{ *self.em == CodeEm::Emphasize }
+            class:correct=&{ *self.em == CodeEm::Correct }
+            class:error=&{ *self.em == CodeEm::Wrong }
         > { &Self::filtered_text(&self.text) } </div>
     },
     pub text: Prop<String>,
-    pub error: Prop<bool>,
-    pub correct: Prop<bool>,
+    pub em: Prop<CodeEm>,
 }
 
 impl Component for CodeLine {
@@ -81,8 +100,7 @@ impl Component for CodeLine {
         Self {
             template: Default::default(),
             text: Default::default(),
-            error: Default::default(),
-            correct: Default::default(),
+            em: Default::default(),
         }
     }
 }
@@ -103,14 +121,14 @@ pub(crate) struct CodeComment {
         <div
             class:line
             class:comment
-            class:error={ &*self.error }
-            class:correct={ &*self.correct }
+            class:emphasize=&{ *self.em == CodeEm::Emphasize }
+            class:correct=&{ *self.em == CodeEm::Correct }
+            class:error=&{ *self.em == CodeEm::Wrong }
         > { &self.whole_text } </div>
     },
     pub text: Prop<LocaleStaticStr>,
     pub indent: Prop<u32>,
-    pub error: Prop<bool>,
-    pub correct: Prop<bool>,
+    pub em: Prop<CodeEm>,
     whole_text: LocaleString,
 }
 
@@ -120,8 +138,7 @@ impl Component for CodeComment {
             template: Default::default(),
             text: Default::default(),
             indent: Default::default(),
-            error: Default::default(),
-            correct: Default::default(),
+            em: Default::default(),
             whole_text: Default::default(),
         }
     }

@@ -13,7 +13,7 @@ stylesheet!(
 #[component(Backend = DomBackend, Translation = guide)]
 pub(crate) struct Content {
     template: template! {
-        <GuideWrapper cur_chapter_path="/guide">
+        <GuideWrapper cur_chapter="/guide">
             <div class:section>
                 <h2 class:section_title> "Add dependencies in Cargo.toml" </h2>
                 <p class:section_desc>
@@ -39,10 +39,10 @@ pub(crate) struct Content {
                     <CodeLine text=r#"[dependencies]"# />
                     <CodeLine text=r#"maomi = "0.4""# />
                     <CodeLine text=r#"maomi-dom = "0.4""# />
-                    <CodeLine correct text=r#"wasm-bindgen = "0.2""# />
-                    <CodeLine correct text=r#"log = "0.4""# />
-                    <CodeLine correct text=r#"console_log = "0.2""# />
-                    <CodeLine correct text=r#"console_error_panic_hook = "0.1""# />
+                    <CodeLine em=&{Emphasize} text=r#"wasm-bindgen = "0.2""# />
+                    <CodeLine em=&{Emphasize} text=r#"log = "0.4""# />
+                    <CodeLine em=&{Emphasize} text=r#"console_log = "0.2""# />
+                    <CodeLine em=&{Emphasize} text=r#"console_error_panic_hook = "0.1""# />
                 </_>
             </div>
 
@@ -145,9 +145,9 @@ pub(crate) struct Content {
                     <CodeLine text=r#"        <meta name="viewport" content="width=device-width,initial-scale=1">"# />
                     <CodeLine text=r#"    </head>"# />
                     <CodeLine text=r#"    <body></body>"# />
-                    <CodeLine text=r#"    <script src="pkg/my_Website.js"></script>"# />
+                    <CodeLine text=r#"    <script src="pkg/my_website.js"></script>"# />
                     <CodeLine text=r#"    <script>"# />
-                    <CodeLine text=r#"        wasm_bindgen('pkg/my_Website_bg.wasm')"# />
+                    <CodeLine text=r#"        wasm_bindgen('pkg/my_website_bg.wasm')"# />
                     <CodeLine text=r#"    </script>"# />
                     <CodeLine text=r#"</html>"# />
                 </_>

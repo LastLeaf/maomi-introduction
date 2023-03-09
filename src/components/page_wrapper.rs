@@ -55,6 +55,7 @@ stylesheet! {
     class main {
         margin = Px(20) 0;
         padding = 0 Px(10);
+        color = TEXT_MAIN;
     }
 
     class footer_wrapper {

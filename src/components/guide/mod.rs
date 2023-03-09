@@ -6,7 +6,8 @@ use components::utils::link::*;
 use components::page_wrapper::PageWrapper;
 
 pub(crate) mod write_a_component;
-pub(crate) mod template_semantics;
+pub(crate) mod template_nodes;
+pub(crate) mod template_branches;
 
 i18n_group!(guide as trans);
 
@@ -31,17 +32,27 @@ stylesheet! {
         min_width = Px(200);
         align_self = start;
         border_left = Px(5) solid ICON_SUB;
-        padding = Em(1) 0;
+        padding = Em(0.5) 0;
         margin = Px(30) Px(40) Px(30) Px(20);
         if media (max_width = Px(800)) {
             margin = Px(20);
         }
     }
-    class side_bar_link {
+    class side_bar_section {
+        padding = Em(0.25) 0;
+    }
+    class side_bar_section_title {
         height = Em(2);
         line_height = Em(2);
         white_space = nowrap;
         padding = 0 Em(1);
+        color = TEXT_SUB;
+    }
+    class side_bar_link {
+        height = Em(2);
+        line_height = Em(2);
+        white_space = nowrap;
+        padding = 0 Em(1) 0 Em(2);
     }
     class side_bar_link_active {
         background_color = ICON_SUB;
@@ -100,20 +111,18 @@ pub(crate) struct GuideWrapper {
         <PageWrapper>
             <div class:wrapper>
                 <div class:main>
-                    <h1 class:title> { self.chapters[self.cur_chapter_index].title } </h1>
+                    <h1 class:title> { self.get_chapter(&self.cur_chapter).title } </h1>
                     <div class:content>
                         <slot />
                     </div>
                     <div class:footer>
-                        if self.cur_chapter_index > 0 {
-                            if let Some(c) = self.chapters.get(self.cur_chapter_index - 1) {
-                                <div class:prev>
-                                    <Link path={ c.path }> "< " { c.title } </Link>
-                                </div>
-                            }
+                        if let Some(c) = self.prev_chapter.map(|x| self.get_chapter(x)) {
+                            <div class:prev>
+                                <Link path={ c.path }> "< " { c.title } </Link>
+                            </div>
                         }
                         <div class:footer_center />
-                        if let Some(c) = self.chapters.get(self.cur_chapter_index + 1) {
+                        if let Some(c) = self.next_chapter.map(|x| self.get_chapter(x)) {
                             <div class:next>
                                 <Link path={ c.path }> { c.title } " >" </Link>
                             </div>
@@ -121,20 +130,31 @@ pub(crate) struct GuideWrapper {
                     </div>
                 </div>
                 <div class:side_bar>
-                    for (index, c) in self.chapters.iter().enumerate() {
-                        <Link path={ c.path }>
-                            <div class:side_bar_link class:side_bar_link_active=&{ index == self.cur_chapter_index }>
-                                { c.title }
-                            </div>
-                        </Link>
+                    for cg in self.chapters.iter() {
+                        <div class:side_bar_section>
+                            <div class:side_bar_section_title> { cg.title } </div>
+                            for c in cg.chapters.iter() {
+                                <Link path={ c.path }>
+                                    <div class:side_bar_link class:side_bar_link_active=&{ c.path == &*self.cur_chapter }>
+                                        { c.title }
+                                    </div>
+                                </Link>
+                            }
+                        </div>
                     }
                 </div>
             </div>
         </PageWrapper>
     },
+    chapters: Vec<ChapterGroup>,
+    pub(crate) cur_chapter: Prop<String>,
+    prev_chapter: Option<&'static str>,
+    next_chapter: Option<&'static str>,
+}
+
+struct ChapterGroup {
+    title: LocaleStaticStr,
     chapters: Vec<Chapter>,
-    pub(crate) cur_chapter_path: Prop<String>,
-    cur_chapter_index: usize,
 }
 
 struct Chapter {
@@ -147,15 +167,55 @@ impl Component for GuideWrapper {
         Self {
             template: Default::default(),
             chapters: vec![
-                Chapter { path: "/guide", title: trans!("Write a Component") },
-                Chapter { path: "/guide/template-semantics", title: trans!("Template Semantics") },
+                ChapterGroup {
+                    title: trans!("Basics"),
+                    chapters: vec![
+                        Chapter { path: "/guide", title: trans!("Write a Component") },
+                    ],
+                },
+                ChapterGroup {
+                    title: trans!("Template Semantics"),
+                    chapters: vec![
+                        Chapter { path: "/guide/template-nodes", title: trans!("Template Nodes") },
+                        Chapter { path: "/guide/template-branches", title: trans!("Template Branches") },
+                    ],
+                },
             ],
-            cur_chapter_path: Default::default(),
-            cur_chapter_index: 0,
+            cur_chapter: Default::default(),
+            prev_chapter: None,
+            next_chapter: None,
         }
     }
 
     fn before_template_apply(&mut self) {
-        self.cur_chapter_index = self.chapters.iter().position(|x| x.path == &*self.cur_chapter_path).unwrap_or_default();
+        self.prev_chapter = None;
+        self.next_chapter = None;
+        let mut found = false;
+        for cg in self.chapters.iter() {
+            for c in cg.chapters.iter() {
+                if found {
+                    self.next_chapter = Some(c.path);
+                    break;
+                }
+                if c.path == self.cur_chapter.as_str() {
+                    found = true;
+                    continue;
+                }
+                self.prev_chapter = Some(c.path);
+            }
+        }
+    }
+}
+
+impl GuideWrapper {
+    fn get_chapter(&self, path: &str) -> &Chapter {
+        for cg in self.chapters.iter() {
+            for c in cg.chapters.iter() {
+                if c.path == path {
+                    return c;
+                }
+            }
+        }
+        unreachable!()
     }
 }

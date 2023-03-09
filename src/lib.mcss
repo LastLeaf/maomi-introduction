@@ -1,2 +1,5 @@
 pub(crate) const ICON_MAIN: value = rgb(232, 152, 86);
 pub(crate) const ICON_SUB: value = rgb(247, 218, 194);
+
+pub(crate) const TEXT_MAIN: value = rgb(16, 16, 16);
+pub(crate) const TEXT_SUB: value = rgb(96, 96, 96);

@@ -15,7 +15,8 @@ macro_rules! for_each_route {
     ($mac:ident) => {
         $mac!("/", components::index::Index);
         $mac!("/guide", components::guide::write_a_component::Content);
-        $mac!("/guide/template-semantics", components::guide::template_semantics::Content);
+        $mac!("/guide/template-nodes", components::guide::template_nodes::Content);
+        $mac!("/guide/template-branches", components::guide::template_branches::Content);
     };
 }
 
@@ -174,6 +175,10 @@ pub(crate) fn jump_to(
         HISTORY.with(|history| {
             history.push_state_with_url(&JsValue::NULL, "", Some(&url)).unwrap();
         });
+        web_sys::window().unwrap()
+            .document().unwrap()
+            .document_element().unwrap()
+            .set_scroll_top(0);
         if let Err(err) = client_side_rendering(_req_path, _query_str) {
             log::error!("{}", err);
         }
