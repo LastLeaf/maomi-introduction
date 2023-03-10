@@ -15,7 +15,7 @@ pub(crate) struct Content {
     template: template! {
         <GuideWrapper cur_chapter="/guide/template-branches">
             <div class:section>
-                <h2 class:section_title> "Quoted text" </h2>
+                <h2 class:section_title> r#"The "if" statement"# </h2>
                 <p class:section_desc>
                     r#"The template looks like HTML or XML, but the text content must be quoted!"#
                 </p>

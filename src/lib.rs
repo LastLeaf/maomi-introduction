@@ -17,6 +17,8 @@ macro_rules! for_each_route {
         $mac!("/guide", components::guide::write_a_component::Content);
         $mac!("/guide/template-nodes", components::guide::template_nodes::Content);
         $mac!("/guide/template-branches", components::guide::template_branches::Content);
+        $mac!("/guide/runtime-performance-tips", components::guide::runtime_performance_tips::Content);
+        $mac!("/guide/compilation-performance-tips", components::guide::compilation_performance_tips::Content);
     };
 }
 

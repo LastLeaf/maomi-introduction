@@ -170,14 +170,13 @@ pub(crate) struct Content {
                     r#"Expressions for attributes always accept references."#
                 </p>
                 <p class:section_desc>
-                    r#"For convenience, the "&" can be written outside of the brace."#
+                    r#"The "&" can be written outside the brace - sometimes it looks better."#
                 </p>
                 <CodeSegment>
                     <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
                     <CodeLine text=r#"struct MyWebsite {"# />
                     <CodeLine text=r#"    template: template! {"# />
-                    <CodeLine em=&{Emphasize} text=r#"        <div id=&{ self.my_string_data } />"# />
-                    <CodeLine em=&{Emphasize} text=r#"        <div hidden=&{ self.my_boolean_data } />"# />
+                    <CodeLine em=&{Emphasize} text=r#"        <div hidden=&{ !self.my_boolean_data } />"# />
                     <CodeLine text=r#"    },"# />
                     <CodeLine text=r#"    my_string_data: String,"# />
                     <CodeLine text=r#"    my_boolean_data: bool,"# />

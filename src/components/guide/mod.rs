@@ -8,6 +8,8 @@ use components::page_wrapper::PageWrapper;
 pub(crate) mod write_a_component;
 pub(crate) mod template_nodes;
 pub(crate) mod template_branches;
+pub(crate) mod runtime_performance_tips;
+pub(crate) mod compilation_performance_tips;
 
 i18n_group!(guide as trans);
 
@@ -178,6 +180,13 @@ impl Component for GuideWrapper {
                     chapters: vec![
                         Chapter { path: "/guide/template-nodes", title: trans!("Template Nodes") },
                         Chapter { path: "/guide/template-branches", title: trans!("Template Branches") },
+                    ],
+                },
+                ChapterGroup {
+                    title: trans!("Performance Tips"),
+                    chapters: vec![
+                        Chapter { path: "/guide/runtime-performance-tips", title: trans!("Runtime Performance Tips") },
+                        Chapter { path: "/guide/compilation-performance-tips", title: trans!("Compilation Performance Tips") },
                     ],
                 },
             ],
