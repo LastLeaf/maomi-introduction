@@ -70,6 +70,53 @@ stylesheet!(
         margin = Em(0.5) 0 0;
     }
     class code_wrapper {}
+
+    class perf_graph {
+        display = flex;
+        overflow_x = auto;
+        align_items = end;
+        padding = Px(10) 0;
+    }
+    class perf_col {
+        flex = 1 0 Em(5);
+    }
+    class perf_box {
+        width = Em(1.5);
+        margin = 0 auto;
+    }
+    class perf_overall {
+        background_color = ICON_MAIN;
+        width = Em(0.75);
+        display = inline_block;
+    }
+    class perf_tree_build {
+        background_color = ICON_SUB;
+        width = Em(0.75);
+        display = inline_block;
+    }
+    style perf_height(n: f32) {
+        height = Px(n);
+    }
+    class perf_name {
+        white_space = nowrap;
+        text_align = center;
+    }
+    class perf_graph_note_overall {
+        display = inline_block;
+        background_color = ICON_MAIN;
+        width = Em(1);
+        height = Em(1);
+        vertical_align = middle;
+        margin_right = Em(0.5);
+    }
+    class perf_graph_note_tree_build {
+        display = inline_block;
+        background_color = ICON_SUB;
+        width = Em(1);
+        height = Em(1);
+        vertical_align = middle;
+        margin = 0 Em(0.5) 0 Em(1.5);
+    }
 );
 
 #[component(Backend = DomBackend, Translation = index)]
@@ -132,7 +179,21 @@ pub(crate) struct Index {
                 <div class:section_desc>
                     "Maomi is optimized for speed. The performance is even better than hand-written JavaScript without any framework."
                 </div>
-                <img class:section_img src="" />
+                <div class:perf_graph>
+                    for perf in &self.perf_list {
+                        <div class:perf_col>
+                            <div class:perf_box>
+                                <div class:perf_overall style:perf_height=&{ perf.overall * 100. }></div>
+                                <div class:perf_tree_build style:perf_height=&{ perf.tree_build / 5. }></div>
+                            </div>
+                            <div class:perf_name> { LocaleString::translated(perf.name) } </div>
+                        </div>
+                    }
+                </div>
+                <div class:section_note>
+                    <div class:perf_graph_note_overall></div> "overall timing (geometry mean)"
+                    <div class:perf_graph_note_tree_build></div> "large tree build timing"
+                </div>
                 <div class:section_note>
                     "This DOM manipulation benchmark is based on "
                     <RawLink underline new_page url="https://github.com/krausest/js-framework-benchmark">
@@ -197,23 +258,36 @@ pub(crate) struct Index {
                 <div class:section_desc>
                     "Maomi supports server side rendering. It just execute native rust binary in the server to generate HTML output. It is much more performant than using a JavaScript runtime."
                 </div>
-                <img class:section_img src="" />
             </div>
             <div class:section>
                 <h2 class:section_title> "Integrated i18n Support" </h2>
                 <div class:section_desc>
                     "Maomi supports i18n in the core design. It is easy to compile with TOML-based translation files to generate different version of the application."
                 </div>
-                <img class:section_img src="" />
             </div>
         </PageWrapper>
     },
+    perf_list: Vec<Perf>,
+}
+
+struct Perf {
+    name: &'static str,
+    overall: f32,
+    tree_build: f32,
 }
 
 impl Component for Index {
     fn new() -> Self {
         Self {
             template: Default::default(),
+            perf_list: vec![
+                Perf { name: "maomi", overall: 1.04, tree_build: 658.2 },
+                Perf { name: "vanillajs", overall: 1.33, tree_build: 681.9 },
+                Perf { name: "vue", overall: 1.58, tree_build: 805.5 },
+                Perf { name: "svelte", overall: 1.59, tree_build: 817.3 },
+                Perf { name: "angular", overall: 2.06, tree_build: 845.9 },
+                Perf { name: "react", overall: 2.28, tree_build: 1033.9 },
+            ],
         }
     }
 }
