@@ -69,6 +69,6 @@ impl PrerenderableComponent for Content {
 
 impl PageMeta for Content {
     fn title(&self) -> LocaleString {
-        trans!("{} - {}", trans!("maomi Guide"), trans!("Template Semantics")).to_locale_string()
+        trans!("{} - {}", trans!("maomi Guide"), trans!("Compilation Performance Tips")).to_locale_string()
     }
 }

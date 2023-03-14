@@ -17,6 +17,15 @@ macro_rules! for_each_route {
         $mac!("/guide", components::guide::write_a_component::Content);
         $mac!("/guide/template-nodes", components::guide::template_nodes::Content);
         $mac!("/guide/template-branches", components::guide::template_branches::Content);
+        $mac!("/guide/template-repeats", components::guide::template_repeats::Content);
+        $mac!("/guide/template-updates", components::guide::template_updates::Content);
+        $mac!("/guide/events", components::guide::events::Content);
+        $mac!("/guide/style-classes", components::guide::style_classes::Content);
+        $mac!("/guide/conditional-styles", components::guide::conditional_styles::Content);
+        $mac!("/guide/style-constants", components::guide::style_constants::Content);
+        $mac!("/guide/style-functions", components::guide::style_functions::Content);
+        $mac!("/guide/global-stylesheets", components::guide::global_stylesheets::Content);
+        $mac!("/guide/using-components", components::guide::using_components::Content);
         $mac!("/guide/runtime-performance-tips", components::guide::runtime_performance_tips::Content);
         $mac!("/guide/compilation-performance-tips", components::guide::compilation_performance_tips::Content);
     };

@@ -29,7 +29,7 @@ pub(crate) struct Content {
             <div class:section>
                 <h2 class:section_title> r#"About code size"# </h2>
                 <p class:section_desc>
-                    r#"In most cases, WebAssembly binary is bigger than JavaScript code, but it can have a better compression rate. Do not forget to turn on HTTP compression on the generated binary."#
+                    r#"In most cases, WebAssembly binary is bigger than JavaScript code, but it generally has a better compression rate. Do not forget to turn on HTTP compression on the generated binary."#
                 </p>
                 <p class:section_desc>
                     r#"Besides that, some code generation options have great helps to reduce the generated WebAssembly binary size. It is recommended to use the following options in Cargo.toml."#
@@ -69,6 +69,6 @@ impl PrerenderableComponent for Content {
 
 impl PageMeta for Content {
     fn title(&self) -> LocaleString {
-        trans!("{} - {}", trans!("maomi Guide"), trans!("Template Semantics")).to_locale_string()
+        trans!("{} - {}", trans!("maomi Guide"), trans!("Runtime Performance Tips")).to_locale_string()
     }
 }

@@ -8,6 +8,15 @@ use components::page_wrapper::PageWrapper;
 pub(crate) mod write_a_component;
 pub(crate) mod template_nodes;
 pub(crate) mod template_branches;
+pub(crate) mod template_repeats;
+pub(crate) mod template_updates;
+pub(crate) mod events;
+pub(crate) mod style_classes;
+pub(crate) mod conditional_styles;
+pub(crate) mod style_constants;
+pub(crate) mod style_functions;
+pub(crate) mod global_stylesheets;
+pub(crate) mod using_components;
 pub(crate) mod runtime_performance_tips;
 pub(crate) mod compilation_performance_tips;
 
@@ -180,6 +189,34 @@ impl Component for GuideWrapper {
                     chapters: vec![
                         Chapter { path: "/guide/template-nodes", title: trans!("Template Nodes") },
                         Chapter { path: "/guide/template-branches", title: trans!("Template Branches") },
+                        Chapter { path: "/guide/template-repeats", title: trans!("Template Repeats") },
+                        Chapter { path: "/guide/template-updates", title: trans!("Template Updates") },
+                        Chapter { path: "/guide/events", title: trans!("Events") },
+                    ],
+                },
+                ChapterGroup {
+                    title: trans!("Stylesheets"),
+                    chapters: vec![
+                        Chapter { path: "/guide/style-classes", title: trans!("Style Classes") },
+                        Chapter { path: "/guide/conditional-styles", title: trans!("Conditional Styles") },
+                        Chapter { path: "/guide/style-constants", title: trans!("Style Constants") },
+                        Chapter { path: "/guide/style-functions", title: trans!("Style Functions") },
+                        Chapter { path: "/guide/global-stylesheets", title: trans!("Global Stylesheets") },
+                    ],
+                },
+                ChapterGroup {
+                    title: trans!("Components"),
+                    chapters: vec![
+                        Chapter { path: "/guide/using-components", title: trans!("Using Components") },
+                        Chapter { path: "/guide/event-properties", title: trans!("Event Properties") },
+                        Chapter { path: "/guide/two-way-properties", title: trans!("Two Way Properties") },
+                    ],
+                },
+                ChapterGroup {
+                    title: trans!("Advanced Features"),
+                    chapters: vec![
+                        Chapter { path: "/guide/server-side-rendering", title: trans!("Server Side Rendering") },
+                        Chapter { path: "/guide/i18n-support", title: trans!("I18n Support") },
                     ],
                 },
                 ChapterGroup {
@@ -200,11 +237,11 @@ impl Component for GuideWrapper {
         self.prev_chapter = None;
         self.next_chapter = None;
         let mut found = false;
-        for cg in self.chapters.iter() {
+        'a: for cg in self.chapters.iter() {
             for c in cg.chapters.iter() {
                 if found {
                     self.next_chapter = Some(c.path);
-                    break;
+                    break 'a;
                 }
                 if c.path == self.cur_chapter.as_str() {
                     found = true;

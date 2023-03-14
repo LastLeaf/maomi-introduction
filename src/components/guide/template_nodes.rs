@@ -23,9 +23,9 @@ pub(crate) struct Content {
                     <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
                     <CodeLine text=r#"struct MyWebsite {"# />
                     <CodeLine text=r#"    template: template! {"# />
-                    <CodeComment em=&{Wrong} indent=8 text=&{ trans!(r#"Error: text content must be quoted"#) } />
+                    <CodeComment em=&{Wrong} indent=8 text=&{ trans!(r#"error: text content must be quoted"#) } />
                     <CodeLine em=&{Wrong} text=r#"        <div> My Website </div>"# />
-                    <CodeComment em=&{Correct} indent=8 text=&{ trans!(r#"Correct:"#) } />
+                    <CodeComment em=&{Correct} indent=8 text=&{ trans!(r#"correct:"#) } />
                     <CodeLine em=&{Correct} text=r#"        <div> "My Website" </div>"# />
                     <CodeLine text=r#"    }"# />
                     <CodeLine text=r#"}"# />
@@ -211,6 +211,6 @@ impl PrerenderableComponent for Content {
 
 impl PageMeta for Content {
     fn title(&self) -> LocaleString {
-        trans!("{} - {}", trans!("maomi Guide"), trans!("Template Semantics")).to_locale_string()
+        trans!("{} - {}", trans!("maomi Guide"), trans!("Template Nodes")).to_locale_string()
     }
 }

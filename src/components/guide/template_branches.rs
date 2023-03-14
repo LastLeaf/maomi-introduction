@@ -15,19 +15,57 @@ pub(crate) struct Content {
     template: template! {
         <GuideWrapper cur_chapter="/guide/template-branches">
             <div class:section>
-                <h2 class:section_title> r#"The "if" statement"# </h2>
+                <h2 class:section_title> r#"If statements"# </h2>
                 <p class:section_desc>
-                    r#"The template looks like HTML or XML, but the text content must be quoted!"#
+                    r#"The if statements are allowed."#
                 </p>
                 <CodeSegment>
                     <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
                     <CodeLine text=r#"struct MyWebsite {"# />
                     <CodeLine text=r#"    template: template! {"# />
-                    <CodeComment em=&{Wrong} indent=8 text=&{ trans!(r#"Error: text content must be quoted"#) } />
-                    <CodeLine em=&{Wrong} text=r#"        <div> My Website </div>"# />
-                    <CodeComment em=&{Correct} indent=8 text=&{ trans!(r#"Correct:"#) } />
-                    <CodeLine em=&{Correct} text=r#"        <div> "My Website" </div>"# />
-                    <CodeLine text=r#"    }"# />
+                    <CodeLine em=&{Emphasize} text=r#"        if self.my_boolean_data {"# />
+                    <CodeLine text=r#"            <div> "My Optional Element" </div>"# />
+                    <CodeLine em=&{Emphasize} text=r#"        } else {"# />
+                    <CodeLine text=r#"            <div> "Another Element" </div>"# />
+                    <CodeLine em=&{Emphasize} text=r#"        }"# />
+                    <CodeLine text=r#"    },"# />
+                    <CodeLine text=r#"    my_boolean_data: bool,"# />
+                    <CodeLine text=r#"}"# />
+                </_>
+                <p class:section_desc>
+                    r#"Likewise, the if-let statements are also allowed."#
+                </p>
+                <CodeSegment>
+                    <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
+                    <CodeLine text=r#"struct MyWebsite {"# />
+                    <CodeLine text=r#"    template: template! {"# />
+                    <CodeLine em=&{Emphasize} text=r#"        if let Some(s) = &self.my_option {"# />
+                    <CodeLine text=r#"            <div> { s } </div>"# />
+                    <CodeLine em=&{Emphasize} text=r#"        }"# />
+                    <CodeLine text=r#"    },"# />
+                    <CodeLine text=r#"    my_option: Option<String>,"# />
+                    <CodeLine text=r#"}"# />
+                </_>
+            </div>
+            <div class:section>
+                <h2 class:section_title> r#"Match statements"# </h2>
+                <p class:section_desc>
+                    r#"The match statements are just like common rust code."#
+                </p>
+                <CodeSegment>
+                    <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
+                    <CodeLine text=r#"struct MyWebsite {"# />
+                    <CodeLine text=r#"    template: template! {"# />
+                    <CodeLine em=&{Emphasize} text=r#"        match &self.my_option {"# />
+                    <CodeLine em=&{Emphasize} text=r#"            Some(s) => {"# />
+                    <CodeLine text=r#"                <div> { s } </div>"# />
+                    <CodeLine em=&{Emphasize} text=r#"            }"# />
+                    <CodeLine em=&{Emphasize} text=r#"            None => {"# />
+                    <CodeLine text=r#"                <div> "Another Element" </div>"# />
+                    <CodeLine em=&{Emphasize} text=r#"            }"# />
+                    <CodeLine em=&{Emphasize} text=r#"        }"# />
+                    <CodeLine text=r#"    },"# />
+                    <CodeLine text=r#"    my_option: Option<String>,"# />
                     <CodeLine text=r#"}"# />
                 </_>
             </div>
@@ -59,6 +97,6 @@ impl PrerenderableComponent for Content {
 
 impl PageMeta for Content {
     fn title(&self) -> LocaleString {
-        trans!("{} - {}", trans!("maomi Guide"), trans!("Template Semantics")).to_locale_string()
+        trans!("{} - {}", trans!("maomi Guide"), trans!("Template Branches")).to_locale_string()
     }
 }
