@@ -17,6 +17,10 @@ pub(crate) mod style_constants;
 pub(crate) mod style_functions;
 pub(crate) mod global_stylesheets;
 pub(crate) mod using_components;
+pub(crate) mod component_events;
+pub(crate) mod properties;
+pub(crate) mod server_side_rendering;
+pub(crate) mod i18n_support;
 pub(crate) mod runtime_performance_tips;
 pub(crate) mod compilation_performance_tips;
 
@@ -208,8 +212,8 @@ impl Component for GuideWrapper {
                     title: trans!("Components"),
                     chapters: vec![
                         Chapter { path: "/guide/using-components", title: trans!("Using Components") },
-                        Chapter { path: "/guide/event-properties", title: trans!("Event Properties") },
-                        Chapter { path: "/guide/two-way-properties", title: trans!("Two Way Properties") },
+                        Chapter { path: "/guide/component-events", title: trans!("Component Events") },
+                        Chapter { path: "/guide/properties", title: trans!("Properties") },
                     ],
                 },
                 ChapterGroup {

@@ -26,6 +26,10 @@ macro_rules! for_each_route {
         $mac!("/guide/style-functions", components::guide::style_functions::Content);
         $mac!("/guide/global-stylesheets", components::guide::global_stylesheets::Content);
         $mac!("/guide/using-components", components::guide::using_components::Content);
+        $mac!("/guide/component-events", components::guide::component_events::Content);
+        $mac!("/guide/properties", components::guide::properties::Content);
+        $mac!("/guide/server-side-rendering", components::guide::server_side_rendering::Content);
+        $mac!("/guide/i18n-support", components::guide::i18n_support::Content);
         $mac!("/guide/runtime-performance-tips", components::guide::runtime_performance_tips::Content);
         $mac!("/guide/compilation-performance-tips", components::guide::compilation_performance_tips::Content);
     };

@@ -126,7 +126,7 @@ pub(crate) struct Index {
             <div class:title_section>
                 <img src="/res/icon_360.png" class:title_icon />
                 <h1 class:title> "maomi" </h1>
-                <p class:subtitle> "Strict and Performant Web Application Programing" </p>
+                <p class:subtitle> "Strict and Performant Web Application Programming" </p>
                 <div class:title_code_wrapper>
                     <CodeSegment>
                         <CodeLine text=r#"#[component]"# />
@@ -139,7 +139,7 @@ pub(crate) struct Index {
                 </div>
             </div>
             <div class:section>
-                <h2 class:section_title> "Programing in Rust" </h2>
+                <h2 class:section_title> "Programming in Rust" </h2>
                 <div class:section_desc>
                     "Write rust code, compile to WebAssembly, and run in browser."
                 </div>
@@ -218,7 +218,7 @@ pub(crate) struct Index {
             <div class:section>
                 <h2 class:section_title> "Data Bindings" </h2>
                 <div class:section_desc>
-                    "Maomi is based on templating and data bindings."
+                    "Maomi is based on templates and data bindings."
                 </div>
                 <div class:code_wrapper>
                     <CodeSegment>
@@ -308,6 +308,6 @@ impl PrerenderableComponent for Index {
 
 impl PageMeta for Index {
     fn title(&self) -> LocaleString {
-        trans!("maomi - Strict and Performant Web Application Programing").to_locale_string()
+        trans!("maomi - Strict and Performant Web Application Programming").to_locale_string()
     }
 }

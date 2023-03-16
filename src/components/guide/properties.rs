@@ -13,27 +13,29 @@ stylesheet!(
 #[component(Backend = DomBackend, Translation = guide)]
 pub(crate) struct Content {
     template: template! {
-        <GuideWrapper cur_chapter="/guide/using-components">
+        <GuideWrapper cur_chapter="/guide/properties">
             <div class:section>
-                <h2 class:section_title> "Using component in component" </h2>
+                <h2 class:section_title> "Using properties in components" </h2>
                 <p class:section_desc>
-                    r#"Components in maomi are low-cost abstractions. Some web frameworks have a significant overhead with components, but maomi only has a little. Sometimes components can help improve performance."#
+                    r#"Components can contain several fields which are assignable through template attributes."#
                 </p>
                 <p class:section_desc>
-                    r#"Like DOM elements, a component can be used as tags."#
+                    r#"The properties should be wrapped with "Prop". The "Prop" type implements "Deref" so it can be dereferenced to the contained type."#
                 </p>
                 <CodeSegment>
                     <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
                     <CodeLine text=r#"struct MyChild {"# />
                     <CodeLine text=r#"    template: template! {"# />
-                    <CodeLine text=r#"        <div> "This line is in the child component." </div>"# />
-                    <CodeLine text=r#"    }"# />
+                    <CodeLine text=r#"        <div> { format!("The content is {}", *self.content) } </div>"# />
+                    <CodeLine text=r#"    },"# />
+                    <CodeLine em=&{Emphasize} text=r#"    pub content: Prop<String>,"# />
                     <CodeLine text=r#"}"# />
                     <CodeLine text=r#""# />
                     <CodeLine text=r#"impl Component for MyChild {"# />
                     <CodeLine text=r#"    fn new() -> Self {"# />
                     <CodeLine text=r#"        Self {"# />
                     <CodeLine text=r#"            template: Default::default(),"# />
+                    <CodeLine em=&{Emphasize} text=r#"            content: Prop::new("default".to_string()),"# />
                     <CodeLine text=r#"        }"# />
                     <CodeLine text=r#"    }"# />
                     <CodeLine text=r#"}"# />
@@ -41,7 +43,7 @@ pub(crate) struct Content {
                     <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
                     <CodeLine text=r#"struct MyWebsite {"# />
                     <CodeLine text=r#"    template: template! {"# />
-                    <CodeLine text=r#"        <MyChild />"# />
+                    <CodeLine em=&{Emphasize} text=r#"        <MyChild content="from MyWebsite" />"# />
                     <CodeLine text=r#"    }"# />
                     <CodeLine text=r#"}"# />
                     <CodeLine text=r#""# />
@@ -53,89 +55,83 @@ pub(crate) struct Content {
                     <CodeLine text=r#"    }"# />
                     <CodeLine text=r#"}"# />
                 </_>
+                <p class:section_desc>
+                    r#"Note that the property fields should be properly "pub" so that it can be assigned from templates in other rust modules."#
+                </p>
             </div>
 
             <div class:section>
-                <h2 class:section_title> "Slots in components" </h2>
+                <h2 class:section_title> "Two-way properties" </h2>
                 <p class:section_desc>
-                    r#"The component can put a "<slot />" tag in the template. It will be replaced with the child nodes in its users."#
+                    r#"Common properties are one-way: the component receives the value from its user."#
+                </p>
+                <p class:section_desc>
+                    r#"Sometimes it is required to be two-way, e.g. synchronize input values between components."#
+                </p>
+                <p class:section_desc>
+                    r#"In these cases, "BindingProp" and "BindingValue" can be used. However, the changes of two-way values do not automatically triggering the template update. A task should be manually generated if the template update is required."#
                 </p>
                 <CodeSegment>
+                    <CodeLine text=r#"use maomi::prop::{BindingProp, BindingValue};"# />
+                    <CodeLine text=r#"use maomi_dom::event::*;"# />
+                    <CodeLine text=r#""# />
                     <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
                     <CodeLine text=r#"struct MyChild {"# />
                     <CodeLine text=r#"    template: template! {"# />
-                    <CodeLine text=r#"        <div> "This line is in the child component." </div>"# />
-                    <CodeLine em=&{Emphasize} text=r#"        <slot />"# />
-                    <CodeLine text=r#"    }"# />
-                    <CodeLine text=r#"}"# />
-                    <CodeLine text=r#""# />
-                    <CodeLine text=r#"impl Component for MyChild {"# />
-                    <CodeLine text=r#"    fn new() -> Self {"# />
-                    <CodeLine text=r#"        Self {"# />
-                    <CodeLine text=r#"            template: Default::default(),"# />
-                    <CodeLine text=r#"        }"# />
-                    <CodeLine text=r#"    }"# />
-                    <CodeLine text=r#"}"# />
-                    <CodeLine text=r#""# />
-                    <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
-                    <CodeLine text=r#"struct MyWebsite {"# />
-                    <CodeLine text=r#"    template: template! {"# />
-                    <CodeLine em=&{Emphasize} text=r#"        <MyChild>"# />
-                    <CodeLine em=&{Emphasize} text=r#"            <div> "This line will be placed in the slot." </div>"# />
-                    <CodeLine em=&{Emphasize} text=r#"        </_>"# />
-                    <CodeLine text=r#"    }"# />
-                    <CodeLine text=r#"}"# />
-                    <CodeLine text=r#""# />
-                    <CodeLine text=r#"impl Component for MyWebsite {"# />
-                    <CodeLine text=r#"    fn new() -> Self {"# />
-                    <CodeLine text=r#"        Self {"# />
-                    <CodeLine text=r#"            template: Default::default(),"# />
-                    <CodeLine text=r#"        }"# />
-                    <CodeLine text=r#"    }"# />
-                    <CodeLine text=r#"}"# />
-                </_>
-                <p class:section_desc>
-                    r#"It is able to pass data in the slot with "data" attribute. Its users can retrieve the reference of the data with "slot:xxx" attributes."#
-                </p>
-                <p class:section_desc>
-                    r#"Besides it, the slot data type should be specified with the "SlotData" attribute argument."#
-                </p>
-                <CodeSegment>
-                    <CodeLine em=&{Emphasize} text=r#"#[component(Backend = DomBackend, SlotData = String)]"# />
-                    <CodeLine text=r#"struct MyChild {"# />
-                    <CodeLine text=r#"    template: template! {"# />
-                    <CodeLine text=r#"        <div> "This line is in the child component." </div>"# />
-                    <CodeLine em=&{Emphasize} text=r#"        <slot data=&{ self.my_string_data } />"# />
+                    <CodeLine text=r#"        <input value=&{ self.input_value } input=@value_changed() />"# />
                     <CodeLine text=r#"    },"# />
-                    <CodeLine text=r#"    my_string_data: String,"# />
+                    <CodeLine text=r#"    input_value: BindingValue<String>,"# />
+                    <CodeLine text=r#"    pub content: BindingProp<String>,"# />
+                    <CodeLine text=r#"    pub change: Event<()>,"# />
                     <CodeLine text=r#"}"# />
                     <CodeLine text=r#""# />
                     <CodeLine text=r#"impl Component for MyChild {"# />
                     <CodeLine text=r#"    fn new() -> Self {"# />
                     <CodeLine text=r#"        Self {"# />
                     <CodeLine text=r#"            template: Default::default(),"# />
-                    <CodeLine text=r#"            my_string_data: "slot data".to_string(),"# />
+                    <CodeLine text=r#"            input_value: Default::default(),"# />
+                    <CodeLine text=r#"            content: Default::default(),"# />
+                    <CodeLine text=r#"            change: Default::default(),"# />
                     <CodeLine text=r#"        }"# />
+                    <CodeLine text=r#"    }"# />
+                    <CodeLine text=r#"}"# />
+                    <CodeLine text=r#""# />
+                    <CodeLine text=r#"impl MyChild {"# />
+                    <CodeLine text=r#"    fn value_changed(this: ComponentRc<Self>, _: &mut InputEvent) {"# />
+                    <CodeLine text=r#"        this.task_with(|this, _| {"# />
+                    <CodeLine text=r#"            this.content.set(this.input_value.get());"# />
+                    <CodeLine text=r#"            this.change.trigger(&mut ());"# />
+                    <CodeLine text=r#"        });"# />
                     <CodeLine text=r#"    }"# />
                     <CodeLine text=r#"}"# />
                     <CodeLine text=r#""# />
                     <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
                     <CodeLine text=r#"struct MyWebsite {"# />
                     <CodeLine text=r#"    template: template! {"# />
-                    <CodeLine em=&{Emphasize} text=r#"        <MyChild slot:sd>"# />
-                    <CodeLine em=&{Emphasize} text=r#"            <div> { sd } </div>"# />
-                    <CodeLine em=&{Emphasize} text=r#"        </_>"# />
-                    <CodeLine text=r#"    }"# />
+                    <CodeLine text=r#"        <MyChild content=&{ self.content } change=@content_changed() />"# />
+                    <CodeLine text=r#"        <div> { self.content.get() } </div>"# />
+                    <CodeLine text=r#"    },"# />
+                    <CodeLine text=r#"    content: BindingValue<String>,"# />
                     <CodeLine text=r#"}"# />
                     <CodeLine text=r#""# />
                     <CodeLine text=r#"impl Component for MyWebsite {"# />
                     <CodeLine text=r#"    fn new() -> Self {"# />
                     <CodeLine text=r#"        Self {"# />
                     <CodeLine text=r#"            template: Default::default(),"# />
+                    <CodeLine text=r#"            content: Default::default(),"# />
                     <CodeLine text=r#"        }"# />
                     <CodeLine text=r#"    }"# />
                     <CodeLine text=r#"}"# />
+                    <CodeLine text=r#""# />
+                    <CodeLine text=r#"impl MyWebsite {"# />
+                    <CodeLine text=r#"    fn content_changed(this: ComponentRc<Self>, _: &mut ()) {"# />
+                    <CodeLine text=r#"        this.task(|_| {});"# />
+                    <CodeLine text=r#"    }"# />
+                    <CodeLine text=r#"}"# />
                 </_>
+                <p class:section_desc>
+                    r#"Note that "BindingProp" and "BindingValue" do not implement "Deref" - use explicit getter functions to retrieve the value."#
+                </p>
             </div>
         </GuideWrapper>
     },
@@ -165,6 +161,6 @@ impl PrerenderableComponent for Content {
 
 impl PageMeta for Content {
     fn title(&self) -> LocaleString {
-        trans!("{} - {}", trans!("maomi Guide"), trans!("Using Components")).to_locale_string()
+        trans!("{} - {}", trans!("maomi Guide"), trans!("Properties")).to_locale_string()
     }
 }

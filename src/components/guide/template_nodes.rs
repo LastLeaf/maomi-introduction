@@ -88,7 +88,7 @@ pub(crate) struct Content {
                     <CodeLine text=r#"}"# />
                 </_>
                 <p class:section_desc>
-                    r#"It is able to use "self" in the expression."#
+                    r#"It is able to use the "self" reference in the expression."#
                 </p>
                 <CodeSegment>
                     <CodeLine text=r#"#[component(Backend = DomBackend)]"# />
