@@ -18,15 +18,19 @@ wasm-pack build --target no-modules && cargo build --release
 
 ## Language
 
-The language is controlled by `LANG` environment variable while compilation. Currently available languages:
+The language is controlled by `MAOMI_I18N_LOCALE` environment variable while compilation. Currently available languages:
 
-* `C` for default (English);
+* default (English);
 * `zh_CN` for Simplified Chinese.
 
-Specify `LANG=C` if there is compilation error about missing the translation file.
+Specify `MAOMI_I18N_LOCALE=` if there is compilation error about missing the translation file.
 
 ## Server Side Rendering
 
 Server-side rendering is disabled by default.
 
 To enable it, use feature `server-side-rendering` while compilation.
+
+```sh
+wasm-pack build --target no-modules --features server-side-rendering && cargo build --release --features server-side-rendering
+```

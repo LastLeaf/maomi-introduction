@@ -281,12 +281,12 @@ impl Component for Index {
         Self {
             template: Default::default(),
             perf_list: vec![
-                Perf { name: "maomi", overall: 1.04, tree_build: 658.2 },
-                Perf { name: "vanillajs", overall: 1.33, tree_build: 681.9 },
-                Perf { name: "vue", overall: 1.58, tree_build: 805.5 },
-                Perf { name: "svelte", overall: 1.59, tree_build: 817.3 },
-                Perf { name: "angular", overall: 2.06, tree_build: 845.9 },
-                Perf { name: "react", overall: 2.28, tree_build: 1033.9 },
+                Perf { name: "maomi", overall: 1.07, tree_build: 638.7 },
+                Perf { name: "vanillajs", overall: 1.34, tree_build: 674.1 },
+                Perf { name: "vue", overall: 1.57, tree_build: 805.5 },
+                Perf { name: "svelte", overall: 1.58, tree_build: 817.3 },
+                Perf { name: "angular", overall: 2.05, tree_build: 845.9 },
+                Perf { name: "react", overall: 2.26, tree_build: 1033.9 },
             ],
         }
     }
