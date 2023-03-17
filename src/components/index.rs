@@ -280,18 +280,9 @@ impl Component for Index {
         Self {
             template: Default::default(),
             perf_list: vec![
-<<<<<<< Updated upstream
-                Perf { name: "maomi", overall: 1.07, tree_build: 638.7 },
-                Perf { name: "vanillajs", overall: 1.34, tree_build: 674.1 },
-                Perf { name: "vue", overall: 1.57, tree_build: 805.5 },
-                Perf { name: "svelte", overall: 1.58, tree_build: 817.3 },
-                Perf { name: "angular", overall: 2.05, tree_build: 845.9 },
-                Perf { name: "react", overall: 2.26, tree_build: 1033.9 },
-=======
                 Perf { name: "maomi", tree_build: 55.6, tree_update: 47.2, components: 65.3 },
                 Perf { name: "react", tree_build: 56.4, tree_update: 211.9, components: 57.1 },
                 Perf { name: "vue", tree_build: 49.1, tree_update: 43.6, components: 102.6 },
->>>>>>> Stashed changes
             ],
         }
     }
