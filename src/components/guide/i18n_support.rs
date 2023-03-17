@@ -23,7 +23,7 @@ pub(crate) struct Content {
                     r#"By default, i18n support is disable. To enable it, specify the locale in "MAOMI_I18N_LOCALE" environment variable while compilation."#
                 </p>
                 <CodeSegment>
-                    <CodeLine text=r#"MAOMI_I18N_LOCALE=zh_CN"# />
+                    <CodeLine text=r#"MAOMI_I18N_LOCALE=en_US"# />
                 </_>
                 <p class:section_desc>
                     r#"When this environment variable often changes, it is recommended to add this line to build.rs:"#

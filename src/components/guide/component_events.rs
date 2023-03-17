@@ -20,7 +20,7 @@ pub(crate) struct Content {
                     r#"Components can trigger events to its users."#
                 </p>
                 <p class:section_desc>
-                    r#"An event can contain a piece of data `T` , wrapped as `Event<T>` . The event data should be provided when triggering it."#
+                    r#"An event can contain a piece of data "T", wrapped as "Event<T>". The event data should be provided when triggering it."#
                 </p>
                 <CodeSegment>
                     <CodeLine text=r#"#[component(Backend = DomBackend)]"# />

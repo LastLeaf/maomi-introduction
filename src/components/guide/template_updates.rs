@@ -15,7 +15,7 @@ pub(crate) struct Content {
     template: template! {
         <GuideWrapper cur_chapter="/guide/template-updates">
             <div class:section>
-                <h2 class:section_title> "Template Updates" </h2>
+                <h2 class:section_title> "Template updates" </h2>
                 <p class:section_desc>
                     r#"Maomi is based on data bindings. Changing the component fields will auto-update the template."#
                 </p>
@@ -54,12 +54,12 @@ pub(crate) struct Content {
             </div>
 
             <div class:section>
-                <h2 class:section_title> "About Tasks" </h2>
+                <h2 class:section_title> "About tasks" </h2>
                 <p class:section_desc>
                     r#"Tasks are asynchronous jobs that can visit one component."#
                 </p>
                 <p class:section_desc>
-                    r#"To generate a task, call task on the ref-counted token. In this way, the template will always be updated after the task ends."#
+                    r#"To generate a task, call "task(...)" on the ref-counted token. In this way, the template will always be updated after the task ends."#
                 </p>
                 <p class:section_desc>
                     r#"Sometimes it is needed to read fields but not update them. To avoid the template update overhead, it is able to generate a read-or-write task."#

@@ -173,7 +173,7 @@ pub(crate) struct Index {
             <div class:section>
                 <h2 class:section_title> "Better Performance" </h2>
                 <div class:section_desc>
-                    "Maomi has great overall performance. It avoids common pitfalls and has balanced performance for regular cases. Like rust language itself, there is no worry about performance in maomi application programming."
+                    "Maomi has great overall performance and avoids common performance pitfalls. Like rust language itself, there is no worry about performance in maomi application programming."
                 </div>
                 <div class:perf_graph>
                     for perf in &self.perf_list {
@@ -190,7 +190,7 @@ pub(crate) struct Index {
                 <div class:section_note>
                     <div class:perf_graph_note_tree_build></div> "tree build timing"
                     <div class:perf_graph_note_tree_build></div> "tree update timing"
-                    <div class:perf_graph_note_tree_build></div> "component creation timing"
+                    <div class:perf_graph_note_tree_build></div> "component abstraction timing"
                 </div>
                 <div class:section_note>
                     "This DOM manipulation benchmark is based on "

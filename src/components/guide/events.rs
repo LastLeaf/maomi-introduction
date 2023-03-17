@@ -40,7 +40,7 @@ pub(crate) struct Content {
             </div>
 
             <div class:section>
-                <h2 class:section_title> "Custom Event Arguments" </h2>
+                <h2 class:section_title> "Custom event arguments" </h2>
                 <p class:section_desc>
                     r#"When binding listeners, extra arguments can be added."#
                 </p>
@@ -69,7 +69,7 @@ pub(crate) struct Content {
             <div class:section>
                 <h2 class:section_title> "Tap events" </h2>
                 <p class:section_desc>
-                    r#"To be mobile friendly, maomi provides tap events as a combination of mouse events and touch events."#
+                    r#"Maomi provides tap events as a combination of mouse events and touch events."#
                 </p>
                 <CodeSegment>
                     <CodeLine text=r#"#[component(Backend = DomBackend)]"# />

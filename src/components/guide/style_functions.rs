@@ -36,7 +36,7 @@ pub(crate) struct Content {
                     <CodeLine text=r#"}"# />
                 </_>
                 <p class:section_desc>
-                    r#"Functions can take arguments, but the arguments can only be numbers (as "f32") or strings (as "&str")"#
+                    r#"Functions can take arguments, but the arguments can only be numbers (as "f32") or strings (as "&str")."#
                 </p>
                 <p class:section_desc>
                     r#"Number arguments can be used in unit-values."#

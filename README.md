@@ -34,3 +34,5 @@ To enable it, use feature `server-side-rendering` while compilation.
 ```sh
 wasm-pack build --target no-modules --features server-side-rendering && cargo build --release --features server-side-rendering
 ```
+
+It seems that there might hit some rust compiler bugs. If so, disable the incremental compilation through `CARGO_INCREMENTAL=0` .

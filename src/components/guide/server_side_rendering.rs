@@ -153,7 +153,7 @@ pub(crate) struct Content {
             <div class:section>
                 <h2 class:section_title> "Reuse the generated HTML in client side" </h2>
                 <p class:section_desc>
-                    r#"To reuse the generated HTML in server side, the backend context should be initialized in with "PrerenderingData"."#
+                    r#"To reuse the generated HTML, the backend context should be initialized in with "PrerenderingData"."#
                 </p>
                 <CodeSegment>
                     <CodeLine text=r#"use maomi::template::ComponentTemplate;"# />
