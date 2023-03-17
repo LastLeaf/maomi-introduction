@@ -81,17 +81,13 @@ stylesheet!(
         flex = 1 0 Em(5);
     }
     class perf_box {
-        width = Em(1.5);
+        width = Em(3.3);
         margin = 0 auto;
-    }
-    class perf_overall {
-        background_color = ICON_MAIN;
-        width = Em(0.75);
-        display = inline_block;
     }
     class perf_tree_build {
         background_color = ICON_SUB;
-        width = Em(0.75);
+        width = Em(1);
+        margin = 0 Em(0.05);
         display = inline_block;
     }
     style perf_height(n: f32) {
@@ -177,22 +173,24 @@ pub(crate) struct Index {
             <div class:section>
                 <h2 class:section_title> "Better Performance" </h2>
                 <div class:section_desc>
-                    "Maomi is optimized for speed. The performance is even better than hand-written JavaScript without any framework."
+                    "Maomi has great overall performance. It avoids common pitfalls and has balanced performance for regular cases. Like rust language itself, there is no worry about performance in maomi application programming."
                 </div>
                 <div class:perf_graph>
                     for perf in &self.perf_list {
                         <div class:perf_col>
                             <div class:perf_box>
-                                <div class:perf_overall style:perf_height=&{ perf.overall * 100. }></div>
-                                <div class:perf_tree_build style:perf_height=&{ perf.tree_build / 5. }></div>
+                                <div class:perf_tree_build style:perf_height=&{ perf.tree_build * 2. }></div>
+                                <div class:perf_tree_build style:perf_height=&{ perf.tree_update * 2. }></div>
+                                <div class:perf_tree_build style:perf_height=&{ perf.components * 2. }></div>
                             </div>
                             <div class:perf_name> { LocaleString::translated(perf.name) } </div>
                         </div>
                     }
                 </div>
                 <div class:section_note>
-                    <div class:perf_graph_note_overall></div> "overall timing (geometry mean)"
-                    <div class:perf_graph_note_tree_build></div> "large tree build timing"
+                    <div class:perf_graph_note_tree_build></div> "tree build timing"
+                    <div class:perf_graph_note_tree_build></div> "tree update timing"
+                    <div class:perf_graph_note_tree_build></div> "component creation timing"
                 </div>
                 <div class:section_note>
                     "This DOM manipulation benchmark is based on "
@@ -272,8 +270,9 @@ pub(crate) struct Index {
 
 struct Perf {
     name: &'static str,
-    overall: f32,
     tree_build: f32,
+    tree_update: f32,
+    components: f32,
 }
 
 impl Component for Index {
@@ -281,12 +280,18 @@ impl Component for Index {
         Self {
             template: Default::default(),
             perf_list: vec![
+<<<<<<< Updated upstream
                 Perf { name: "maomi", overall: 1.07, tree_build: 638.7 },
                 Perf { name: "vanillajs", overall: 1.34, tree_build: 674.1 },
                 Perf { name: "vue", overall: 1.57, tree_build: 805.5 },
                 Perf { name: "svelte", overall: 1.58, tree_build: 817.3 },
                 Perf { name: "angular", overall: 2.05, tree_build: 845.9 },
                 Perf { name: "react", overall: 2.26, tree_build: 1033.9 },
+=======
+                Perf { name: "maomi", tree_build: 55.6, tree_update: 47.2, components: 65.3 },
+                Perf { name: "react", tree_build: 56.4, tree_update: 211.9, components: 57.1 },
+                Perf { name: "vue", tree_build: 49.1, tree_update: 43.6, components: 102.6 },
+>>>>>>> Stashed changes
             ],
         }
     }
