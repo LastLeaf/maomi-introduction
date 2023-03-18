@@ -18,6 +18,7 @@ stylesheet! {
         color = ICON_MAIN;
         display = flex;
         overflow = hidden;
+        background_color = white;
     }
     class icon {
         height = 100%;
@@ -53,9 +54,9 @@ stylesheet! {
     }
 
     class main {
-        margin = Px(20) 0;
-        padding = 0 Px(10);
+        padding = Px(20) Px(10);
         color = TEXT_MAIN;
+        background_color = white;
     }
 
     class footer_wrapper {
@@ -75,7 +76,7 @@ stylesheet! {
 pub(crate) struct PageWrapper {
     template: template! {
         <header class:header_wrapper>
-            <img src="/res/icon_360.png" class:icon />
+            <img src=&{ crate::config::res_path("icon_360.png") } class:icon />
             <div class:title> "maomi" </div>
             <div class:header_link>
                 <Link path="/">
@@ -113,6 +114,10 @@ pub(crate) struct PageWrapper {
             <div class:footer_row>
                 "This website is powered by maomi. "
                 <RawLink underline new_page url="https://github.com/LastLeaf/maomi-introduction"> "Source code is here." </RawLink>
+            </div>
+            <div class:footer_row>
+                "Copyright 2023 lastleaf.cn | "
+                <RawLink new_page url="https://beian.miit.gov.cn/"> "粤ICP备17044902号-2" </RawLink>
             </div>
         </footer>
     },

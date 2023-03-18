@@ -4,6 +4,8 @@ use maomi_dom::prelude::*;
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::{prelude::*, JsCast};
 
+pub mod config;
+
 #[cfg(any(feature = "server-side-rendering", target_arch = "wasm32"))]
 mod components;
 
@@ -117,6 +119,7 @@ where
         include_str!("component_html.tmpl"),
         title = title,
         body = unsafe { std::str::from_utf8_unchecked(&html_body) },
+        path_prefix = crate::config::path_prefix(),
         req_path = req_path,
         data = prerendering_data_base64,
     );
@@ -183,9 +186,9 @@ pub(crate) fn jump_to(
     #[cfg(target_arch = "wasm32")]
     {
         let url = if _query_str.len() > 0 {
-            format!("{}?{}", _req_path, _query_str)
+            format!("{}{}?{}", crate::config::path_prefix(), _req_path, _query_str)
         } else {
-            format!("{}", _req_path)
+            format!("{}{}", crate::config::path_prefix(), _req_path)
         };
         HISTORY.with(|history| {
             history.push_state_with_url(&JsValue::NULL, "", Some(&url)).unwrap();

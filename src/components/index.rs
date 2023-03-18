@@ -5,7 +5,7 @@ use crate::PageMeta;
 use crate::components;
 use components::page_wrapper::PageWrapper;
 use components::utils::code_segment::*;
-use components::utils::link::RawLink;
+use components::utils::link::{RawLink, Link};
 
 i18n_group!(index as trans);
 
@@ -47,6 +47,12 @@ stylesheet!(
         flex_direction = column;
         align_items = center;
     }
+    class title_links {
+        font_size = Em(0.9);
+        text_align = center;
+        margin_top = Px(20);
+        color = rgb(128, 128, 128);
+    }
 
     class section {
         margin = Px(30) auto;
@@ -81,6 +87,10 @@ stylesheet!(
         margin = Em(0.5) 0 0;
     }
     class code_wrapper {}
+    class links {
+        color = ICON_MAIN;
+        font_size = Em(1.1);
+    }
 
     class perf_graph {
         display = flex;
@@ -100,9 +110,9 @@ stylesheet!(
         margin = 0 Em(0.05);
         display = inline_block;
     }
-    const GRAPH_TREE_BUILD: value = rgb(224, 239, 150);
-    const GRAPH_TREE_UPDATE: value = rgb(255, 200, 154);
-    const GRAPH_COMPONENTS: value = rgb(237, 149, 145);
+    const GRAPH_TREE_BUILD: value = rgb(255, 200, 154);
+    const GRAPH_TREE_UPDATE: value = rgb(244, 180, 176);
+    const GRAPH_COMPONENTS: value = rgb(250, 186, 237);
     class perf_tree_build {
         perf_rect();
         background_color = GRAPH_TREE_BUILD;
@@ -150,7 +160,7 @@ pub(crate) struct Index {
     template: template! {
         <PageWrapper>
             <div class:title_section>
-                <img src="/res/icon_360.png" class:title_icon />
+                <img src=&{ crate::config::res_path("icon_360.png") } class:title_icon />
                 <h1 class:title> "maomi" </h1>
                 <p class:subtitle> "Strict and Performant Web Application Programming" </p>
                 <div class:title_code_wrapper>
@@ -162,6 +172,15 @@ pub(crate) struct Index {
                         <CodeLine text=r#"    }"# />
                         <CodeLine text=r#"}"# />
                     </_>
+                </div>
+                <div class:title_links>
+                    <RawLink new_page url="/maomi/en_US">
+                        <span> "English" </span>
+                    </RawLink>
+                    " | "
+                    <RawLink new_page url="/maomi/zh_CN">
+                        <span> "简体中文" </span>
+                    </RawLink>
                 </div>
             </div>
             <div class:section>
@@ -235,8 +254,8 @@ pub(crate) struct Index {
                     "Like rust, maomi reports mistakes while compilation. The mistakes include wrong element names, invalid properties, and even wrong style class names."
                 </div>
                 <div class:section_img_wrapper>
-                    <img class:section_img src="/res/ra_error.png" style:width=322.5 />
-                    <img class:section_img src="/res/ra_error_msg.png" style:width=590 />
+                    <img class:section_img src=&{ crate::config::res_path("ra_error.png") } style:width=322.5 />
+                    <img class:section_img src=&{ crate::config::res_path("ra_error_msg.png") } style:width=590 />
                 </div>
             </div>
             <div class:section>
@@ -245,7 +264,7 @@ pub(crate) struct Index {
                     "With rust-analyzer installed, it is much easier to investigate elements, properties, and even style classes."
                 </div>
                 <div class:section_img_wrapper>
-                    <img class:section_img src="/res/ra_goto.png" style:width=547 />
+                    <img class:section_img src=&{ crate::config::res_path("ra_goto.png") } style:width=547 />
                 </div>
             </div>
             <div class:section>
@@ -296,6 +315,11 @@ pub(crate) struct Index {
                 <h2 class:section_title> "Integrated i18n Support" </h2>
                 <div class:section_desc>
                     "Maomi supports i18n in the core design. It is easy to compile with TOML-based translation files to generate different version of the application."
+                </div>
+            </div>
+            <div class:section>
+                <div class:links>
+                    <Link path="/guide"> "Read Guide >" </Link>
                 </div>
             </div>
         </PageWrapper>

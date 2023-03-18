@@ -18,9 +18,9 @@ pub(crate) struct Link {
             class:inner
             href=&{
                 if self.query.len() > 0 {
-                    format!("{}?{}", self.path, self.query)
+                    format!("{}{}?{}", crate::config::path_prefix(), self.path, self.query)
                 } else {
-                    self.path.to_string()
+                    format!("{}{}", crate::config::path_prefix(), self.path)
                 }
             }
             tap=@tap()

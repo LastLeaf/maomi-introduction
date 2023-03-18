@@ -5,7 +5,7 @@
 To build and run in debug mode, execute:
 
 ```sh
-wasm-pack build --target no-modules --dev && cargo run
+wasm-pack build --target no-modules --dev && cargo run --addr 127.0.0.1:2080
 ```
 
 Visit `http://localhost:2080` for the website.
@@ -36,3 +36,9 @@ wasm-pack build --target no-modules --features server-side-rendering && cargo bu
 ```
 
 It seems that there might hit some rust compiler bugs. If so, disable the incremental compilation through `CARGO_INCREMENTAL=0` .
+
+## Environment Variables
+
+Supported compile-time environment variables:
+
+* `MAOMI_PATH_PREFIX` the path prefix in URL, e.g. `/maomi/en_US` .
