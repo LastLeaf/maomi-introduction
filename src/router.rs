@@ -5,7 +5,8 @@ use hyper::{Body, Request, Response, Method, StatusCode};
 use maomi_introduction::server_side_rendering;
 
 pub(crate) async fn route(req: Request<Body>) -> Result<Response<Body>, hyper::http::Error> {
-    log::info!("visit {:?} {}", req.method(), req.uri());
+    let ip = req.headers().get("X-Forwarded-For").and_then(|x| x.to_str().ok()).unwrap_or("(unknown)");
+    log::info!("visitor {}: {:?} {}", ip, req.method(), req.uri());
     let path_prefix = maomi_introduction::config::path_prefix();
     match req.method() {
         &Method::GET => {
