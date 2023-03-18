@@ -38,7 +38,7 @@ pub(crate) struct Content {
                     r#"It is able to tell maomi to optimize for rust-analyzer. When working with rust-analyzer, maomi can try to generate faster results. The results is not runnable but fast in cargo check."#
                 </p>
                 <p class:section_desc>
-                    r#"To enable this feature, set environment variable MAOMI_RUST_ANALYZER=on to rust-analyzer. Use Visual Studio Code as the example, this environment variable can be set in "rust-analyzer.cargo.extraEnv" settings."#
+                    r#"To enable this experimental feature, set environment variable MAOMI_RUST_ANALYZER=on to rust-analyzer. Use Visual Studio Code as the example, this environment variable can be set in "rust-analyzer.cargo.extraEnv" and "rust-analyzer.check.extraEnv" settings."#
                 </p>
             </div>
         </GuideWrapper>

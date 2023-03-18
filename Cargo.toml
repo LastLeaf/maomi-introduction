@@ -54,6 +54,7 @@ codegen-units = 1
 css-out-dir = "pkg"
 # css-out-mode = "debug"
 
+# use local maomi repo
 [patch.crates-io]
 "maomi" = { path = "../maomi/maomi" }
 "maomi-dom" = { path = "../maomi/maomi-dom" }

@@ -63,7 +63,18 @@ stylesheet!(
         color = desc_color;
         margin = 0 0 Em(0.5);
     }
-    class section_img {}
+    class section_img_wrapper {
+        margin = Px(10) 0;
+        padding = Px(10) Px(20);
+        border_top = Px(1) solid NOTE_COLOR;
+        border_bottom = Px(1) solid NOTE_COLOR;
+    }
+    class section_img {
+        max_width = 100%;
+    }
+    style width(w: f32) {
+        width = Px(w);
+    }
     class section_note {
         font_size = Em(0.7);
         color = NOTE_COLOR;
@@ -84,11 +95,25 @@ stylesheet!(
         width = Em(3.3);
         margin = 0 auto;
     }
-    class perf_tree_build {
-        background_color = ICON_SUB;
+    fn perf_rect() {
         width = Em(1);
         margin = 0 Em(0.05);
         display = inline_block;
+    }
+    const GRAPH_TREE_BUILD: value = rgb(224, 239, 150);
+    const GRAPH_TREE_UPDATE: value = rgb(255, 200, 154);
+    const GRAPH_COMPONENTS: value = rgb(237, 149, 145);
+    class perf_tree_build {
+        perf_rect();
+        background_color = GRAPH_TREE_BUILD;
+    }
+    class perf_tree_update {
+        perf_rect();
+        background_color = GRAPH_TREE_UPDATE;
+    }
+    class perf_components {
+        perf_rect();
+        background_color = GRAPH_COMPONENTS;
     }
     style perf_height(n: f32) {
         height = Px(n);
@@ -97,21 +122,26 @@ stylesheet!(
         white_space = nowrap;
         text_align = center;
     }
-    class perf_graph_note_overall {
+    fn perf_graph_note() {
         display = inline_block;
-        background_color = ICON_MAIN;
         width = Em(1);
         height = Em(1);
         vertical_align = middle;
         margin_right = Em(0.5);
     }
     class perf_graph_note_tree_build {
-        display = inline_block;
-        background_color = ICON_SUB;
-        width = Em(1);
-        height = Em(1);
-        vertical_align = middle;
-        margin = 0 Em(0.5) 0 Em(1.5);
+        perf_graph_note();
+        background_color = GRAPH_TREE_BUILD;
+    }
+    class perf_graph_note_tree_update {
+        perf_graph_note();
+        margin_left = Em(1.5);
+        background_color = GRAPH_TREE_UPDATE;
+    }
+    class perf_graph_note_components {
+        perf_graph_note();
+        margin_left = Em(1.5);
+        background_color = GRAPH_COMPONENTS;
     }
 );
 
@@ -179,9 +209,9 @@ pub(crate) struct Index {
                     for perf in &self.perf_list {
                         <div class:perf_col>
                             <div class:perf_box>
-                                <div class:perf_tree_build style:perf_height=&{ perf.tree_build * 2. }></div>
-                                <div class:perf_tree_build style:perf_height=&{ perf.tree_update * 2. }></div>
-                                <div class:perf_tree_build style:perf_height=&{ perf.components * 2. }></div>
+                                <div class:perf_tree_build style:perf_height=&{ perf.tree_build * 1.5 }></div>
+                                <div class:perf_tree_update style:perf_height=&{ perf.tree_update * 1.5 }></div>
+                                <div class:perf_components style:perf_height=&{ perf.components * 1.5 }></div>
                             </div>
                             <div class:perf_name> { LocaleString::translated(perf.name) } </div>
                         </div>
@@ -189,8 +219,8 @@ pub(crate) struct Index {
                 </div>
                 <div class:section_note>
                     <div class:perf_graph_note_tree_build></div> "tree build timing"
-                    <div class:perf_graph_note_tree_build></div> "tree update timing"
-                    <div class:perf_graph_note_tree_build></div> "component abstraction timing"
+                    <div class:perf_graph_note_tree_update></div> "tree update timing"
+                    <div class:perf_graph_note_components></div> "component abstraction timing"
                 </div>
                 <div class:section_note>
                     "This DOM manipulation benchmark is based on "
@@ -204,14 +234,19 @@ pub(crate) struct Index {
                 <div class:section_desc>
                     "Like rust, maomi reports mistakes while compilation. The mistakes include wrong element names, invalid properties, and even wrong style class names."
                 </div>
-                <img class:section_img src="" />
+                <div class:section_img_wrapper>
+                    <img class:section_img src="/res/ra_error.png" style:width=322.5 />
+                    <img class:section_img src="/res/ra_error_msg.png" style:width=590 />
+                </div>
             </div>
             <div class:section>
                 <h2 class:section_title> "Work with rust-analyzer in IDE" </h2>
                 <div class:section_desc>
                     "With rust-analyzer installed, it is much easier to investigate elements, properties, and even style classes."
                 </div>
-                <img class:section_img src="" />
+                <div class:section_img_wrapper>
+                    <img class:section_img src="/res/ra_goto.png" style:width=547 />
+                </div>
             </div>
             <div class:section>
                 <h2 class:section_title> "Data Bindings" </h2>
