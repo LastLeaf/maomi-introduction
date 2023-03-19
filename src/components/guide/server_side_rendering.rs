@@ -145,9 +145,6 @@ pub(crate) struct Content {
                     <CodeLine text=r#"    (html_buffer, prerendering_data_bin)"# />
                     <CodeLine text=r#"}"# />
                 </_>
-                <p class:section_desc>
-                    r#"Note that these features slightly increase the runtime overhead. Do not enable them if server side rendering is not needed."#
-                </p>
             </div>
 
             <div class:section>
@@ -189,9 +186,6 @@ pub(crate) struct Content {
                     <CodeLine text=r#"    std::mem::forget(backend_context);"# />
                     <CodeLine text=r#"}"# />
                 </_>
-                <p class:section_desc>
-                    r#"Note that these features slightly increase the runtime overhead. Do not enable them if server side rendering is not needed."#
-                </p>
             </div>
         </GuideWrapper>
     },
