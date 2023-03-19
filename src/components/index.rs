@@ -174,11 +174,11 @@ pub(crate) struct Index {
                     </_>
                 </div>
                 <div class:title_links>
-                    <RawLink new_page url="/maomi/en_US">
+                    <RawLink url="/maomi/en_US">
                         <span> "English" </span>
                     </RawLink>
                     " | "
-                    <RawLink new_page url="/maomi/zh_CN">
+                    <RawLink url="/maomi/zh_CN">
                         <span> "简体中文" </span>
                     </RawLink>
                 </div>
