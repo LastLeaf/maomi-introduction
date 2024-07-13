@@ -5,7 +5,7 @@
 To build and run in debug mode, execute:
 
 ```sh
-wasm-pack build --target no-modules --dev && cargo run --addr 127.0.0.1:2080
+wasm-pack build --target no-modules --dev && cargo run -- --addr 127.0.0.1:2080
 ```
 
 Visit `http://localhost:2080` for the website.

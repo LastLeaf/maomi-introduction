@@ -56,7 +56,7 @@ lto = true
 codegen-units = 1
 
 [package.metadata.wasm-pack.profile.release]
-# wasm-opt = ['-O4', '-g']
+wasm-opt = ['-Oz']
 
 [package.metadata.maomi]
 css-out-dir = "pkg"

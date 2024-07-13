@@ -1,4 +1,5 @@
 use std::cell::RefCell;
+#[allow(unused_imports)]
 use maomi::{prelude::*, template::ComponentTemplate, BackendContext, mount_point::DynMountPoint, locale_string::LocaleString};
 use maomi_dom::prelude::*;
 #[cfg(target_arch = "wasm32")]
@@ -48,6 +49,7 @@ thread_local! {
     static CURRENT_MOUNT_POINT: RefCell<Option<DynMountPoint<DomBackend>>> = RefCell::new(None);
 }
 
+#[cfg(any(feature = "server-side-rendering", target_arch = "wasm32"))]
 pub(crate) trait PageMeta: PrerenderableComponent + ComponentTemplate<DomBackend> {
     fn title(&self) -> LocaleString;
 }
@@ -214,7 +216,6 @@ fn init_pop_state_listener(window: &web_sys::Window) {
             Err(_) => "?",
             Ok(x) => x,
         };
-        log::warn!("!!! {:?} {:?}", req_path, search);
         if let Err(err) = client_side_rendering(&req_path, &search[1..]) {
             log::error!("{}", err);
         }
