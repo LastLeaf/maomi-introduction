@@ -1,7 +1,10 @@
+use clap::Parser;
+use hyper::{
+    server::conn::AddrStream,
+    service::{make_service_fn, service_fn},
+};
 use std::convert::Infallible;
 use std::net::SocketAddr;
-use clap::Parser;
-use hyper::{service::{make_service_fn, service_fn}, server::conn::AddrStream};
 
 mod router;
 
@@ -36,9 +39,7 @@ async fn main() {
     // init router
     let make_svc = make_service_fn(|conn: &AddrStream| {
         log::info!("Connected from {:?}", conn.remote_addr());
-        async {
-            Ok::<_, Infallible>(service_fn(router::route))
-        }
+        async { Ok::<_, Infallible>(service_fn(router::route)) }
     });
 
     // init server

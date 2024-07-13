@@ -1,5 +1,8 @@
-use maomi::{prelude::*, locale_string::{LocaleString, LocaleStaticStr}};
-use maomi_dom::{prelude::*, element::*};
+use maomi::{
+    locale_string::{LocaleStaticStr, LocaleString},
+    prelude::*,
+};
+use maomi_dom::{element::*, prelude::*};
 
 stylesheet! {
     use crate::*;
@@ -59,7 +62,7 @@ impl Default for CodeEm {
     }
 }
 
-pub(crate) use CodeEm::{Emphasize, Correct, Wrong};
+pub(crate) use CodeEm::{Correct, Emphasize, Wrong};
 
 #[component(Backend = DomBackend)]
 pub(crate) struct CodeSegment {

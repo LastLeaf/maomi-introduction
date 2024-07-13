@@ -1,11 +1,11 @@
-use maomi::{prelude::*, locale_string::*};
-use maomi_dom::{prelude::*, element::*};
+use maomi::{locale_string::*, prelude::*};
+use maomi_dom::{element::*, prelude::*};
 
-use crate::PageMeta;
 use crate::components;
+use crate::PageMeta;
 use components::page_wrapper::PageWrapper;
 use components::utils::code_segment::*;
-use components::utils::link::{RawLink, Link};
+use components::utils::link::{Link, RawLink};
 
 i18n_group!(index as trans);
 
@@ -339,9 +339,24 @@ impl Component for Index {
         Self {
             template: Default::default(),
             perf_list: vec![
-                Perf { name: "maomi", tree_build: 55.6, tree_update: 47.2, components: 65.3 },
-                Perf { name: "react", tree_build: 56.4, tree_update: 211.9, components: 57.1 },
-                Perf { name: "vue", tree_build: 49.1, tree_update: 43.6, components: 102.6 },
+                Perf {
+                    name: "maomi",
+                    tree_build: 55.6,
+                    tree_update: 47.2,
+                    components: 65.3,
+                },
+                Perf {
+                    name: "react",
+                    tree_build: 56.4,
+                    tree_update: 211.9,
+                    components: 57.1,
+                },
+                Perf {
+                    name: "vue",
+                    tree_build: 49.1,
+                    tree_update: 43.6,
+                    components: 102.6,
+                },
             ],
         }
     }

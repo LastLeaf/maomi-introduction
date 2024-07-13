@@ -1,5 +1,5 @@
 use maomi::prelude::*;
-use maomi_dom::{prelude::*, element::*, event::*};
+use maomi_dom::{element::*, event::*, prelude::*};
 
 stylesheet! {
     class inner {

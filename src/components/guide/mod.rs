@@ -1,28 +1,28 @@
-use maomi::{prelude::*, locale_string::LocaleStaticStr};
-use maomi_dom::{prelude::*, element::*};
+use maomi::{locale_string::LocaleStaticStr, prelude::*};
+use maomi_dom::{element::*, prelude::*};
 
 use crate::components;
-use components::utils::link::*;
 use components::page_wrapper::PageWrapper;
+use components::utils::link::*;
 
-pub(crate) mod write_a_component;
-pub(crate) mod template_nodes;
-pub(crate) mod template_branches;
-pub(crate) mod template_repeats;
-pub(crate) mod template_updates;
-pub(crate) mod events;
-pub(crate) mod style_classes;
+pub(crate) mod compilation_performance_tips;
+pub(crate) mod component_events;
 pub(crate) mod conditional_styles;
+pub(crate) mod events;
+pub(crate) mod global_stylesheets;
+pub(crate) mod i18n_support;
+pub(crate) mod properties;
+pub(crate) mod runtime_performance_tips;
+pub(crate) mod server_side_rendering;
+pub(crate) mod style_classes;
 pub(crate) mod style_constants;
 pub(crate) mod style_functions;
-pub(crate) mod global_stylesheets;
+pub(crate) mod template_branches;
+pub(crate) mod template_nodes;
+pub(crate) mod template_repeats;
+pub(crate) mod template_updates;
 pub(crate) mod using_components;
-pub(crate) mod component_events;
-pub(crate) mod properties;
-pub(crate) mod server_side_rendering;
-pub(crate) mod i18n_support;
-pub(crate) mod runtime_performance_tips;
-pub(crate) mod compilation_performance_tips;
+pub(crate) mod write_a_component;
 
 i18n_group!(guide as trans);
 
@@ -184,50 +184,102 @@ impl Component for GuideWrapper {
             chapters: vec![
                 ChapterGroup {
                     title: trans!("Basics"),
-                    chapters: vec![
-                        Chapter { path: "/guide", title: trans!("Write a Component") },
-                    ],
+                    chapters: vec![Chapter {
+                        path: "/guide",
+                        title: trans!("Write a Component"),
+                    }],
                 },
                 ChapterGroup {
                     title: trans!("Template Semantics"),
                     chapters: vec![
-                        Chapter { path: "/guide/template-nodes", title: trans!("Template Nodes") },
-                        Chapter { path: "/guide/template-branches", title: trans!("Template Branches") },
-                        Chapter { path: "/guide/template-repeats", title: trans!("Template Repeats") },
-                        Chapter { path: "/guide/template-updates", title: trans!("Template Updates") },
-                        Chapter { path: "/guide/events", title: trans!("Events") },
+                        Chapter {
+                            path: "/guide/template-nodes",
+                            title: trans!("Template Nodes"),
+                        },
+                        Chapter {
+                            path: "/guide/template-branches",
+                            title: trans!("Template Branches"),
+                        },
+                        Chapter {
+                            path: "/guide/template-repeats",
+                            title: trans!("Template Repeats"),
+                        },
+                        Chapter {
+                            path: "/guide/template-updates",
+                            title: trans!("Template Updates"),
+                        },
+                        Chapter {
+                            path: "/guide/events",
+                            title: trans!("Events"),
+                        },
                     ],
                 },
                 ChapterGroup {
                     title: trans!("Stylesheets"),
                     chapters: vec![
-                        Chapter { path: "/guide/style-classes", title: trans!("Style Classes") },
-                        Chapter { path: "/guide/conditional-styles", title: trans!("Conditional Styles") },
-                        Chapter { path: "/guide/style-constants", title: trans!("Style Constants") },
-                        Chapter { path: "/guide/style-functions", title: trans!("Style Functions") },
-                        Chapter { path: "/guide/global-stylesheets", title: trans!("Global Stylesheets") },
+                        Chapter {
+                            path: "/guide/style-classes",
+                            title: trans!("Style Classes"),
+                        },
+                        Chapter {
+                            path: "/guide/conditional-styles",
+                            title: trans!("Conditional Styles"),
+                        },
+                        Chapter {
+                            path: "/guide/style-constants",
+                            title: trans!("Style Constants"),
+                        },
+                        Chapter {
+                            path: "/guide/style-functions",
+                            title: trans!("Style Functions"),
+                        },
+                        Chapter {
+                            path: "/guide/global-stylesheets",
+                            title: trans!("Global Stylesheets"),
+                        },
                     ],
                 },
                 ChapterGroup {
                     title: trans!("Components"),
                     chapters: vec![
-                        Chapter { path: "/guide/using-components", title: trans!("Using Components") },
-                        Chapter { path: "/guide/component-events", title: trans!("Component Events") },
-                        Chapter { path: "/guide/properties", title: trans!("Properties") },
+                        Chapter {
+                            path: "/guide/using-components",
+                            title: trans!("Using Components"),
+                        },
+                        Chapter {
+                            path: "/guide/component-events",
+                            title: trans!("Component Events"),
+                        },
+                        Chapter {
+                            path: "/guide/properties",
+                            title: trans!("Properties"),
+                        },
                     ],
                 },
                 ChapterGroup {
                     title: trans!("Advanced Features"),
                     chapters: vec![
-                        Chapter { path: "/guide/server-side-rendering", title: trans!("Server Side Rendering") },
-                        Chapter { path: "/guide/i18n-support", title: trans!("I18n Support") },
+                        Chapter {
+                            path: "/guide/server-side-rendering",
+                            title: trans!("Server Side Rendering"),
+                        },
+                        Chapter {
+                            path: "/guide/i18n-support",
+                            title: trans!("I18n Support"),
+                        },
                     ],
                 },
                 ChapterGroup {
                     title: trans!("Performance Tips"),
                     chapters: vec![
-                        Chapter { path: "/guide/runtime-performance-tips", title: trans!("Runtime Performance Tips") },
-                        Chapter { path: "/guide/compilation-performance-tips", title: trans!("Compilation Performance Tips") },
+                        Chapter {
+                            path: "/guide/runtime-performance-tips",
+                            title: trans!("Runtime Performance Tips"),
+                        },
+                        Chapter {
+                            path: "/guide/compilation-performance-tips",
+                            title: trans!("Compilation Performance Tips"),
+                        },
                     ],
                 },
             ],

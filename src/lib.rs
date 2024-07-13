@@ -1,7 +1,10 @@
-use std::cell::RefCell;
 #[allow(unused_imports)]
-use maomi::{prelude::*, template::ComponentTemplate, BackendContext, mount_point::DynMountPoint, locale_string::LocaleString};
+use maomi::{
+    locale_string::LocaleString, mount_point::DynMountPoint, prelude::*,
+    template::ComponentTemplate, BackendContext,
+};
 use maomi_dom::prelude::*;
+use std::cell::RefCell;
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::{prelude::*, JsCast};
 
@@ -18,23 +21,68 @@ macro_rules! for_each_route {
     ($mac:ident) => {
         $mac!("/", components::index::Index);
         $mac!("/guide", components::guide::write_a_component::Content);
-        $mac!("/guide/template-nodes", components::guide::template_nodes::Content);
-        $mac!("/guide/template-branches", components::guide::template_branches::Content);
-        $mac!("/guide/template-repeats", components::guide::template_repeats::Content);
-        $mac!("/guide/template-updates", components::guide::template_updates::Content);
+        $mac!(
+            "/guide/template-nodes",
+            components::guide::template_nodes::Content
+        );
+        $mac!(
+            "/guide/template-branches",
+            components::guide::template_branches::Content
+        );
+        $mac!(
+            "/guide/template-repeats",
+            components::guide::template_repeats::Content
+        );
+        $mac!(
+            "/guide/template-updates",
+            components::guide::template_updates::Content
+        );
         $mac!("/guide/events", components::guide::events::Content);
-        $mac!("/guide/style-classes", components::guide::style_classes::Content);
-        $mac!("/guide/conditional-styles", components::guide::conditional_styles::Content);
-        $mac!("/guide/style-constants", components::guide::style_constants::Content);
-        $mac!("/guide/style-functions", components::guide::style_functions::Content);
-        $mac!("/guide/global-stylesheets", components::guide::global_stylesheets::Content);
-        $mac!("/guide/using-components", components::guide::using_components::Content);
-        $mac!("/guide/component-events", components::guide::component_events::Content);
+        $mac!(
+            "/guide/style-classes",
+            components::guide::style_classes::Content
+        );
+        $mac!(
+            "/guide/conditional-styles",
+            components::guide::conditional_styles::Content
+        );
+        $mac!(
+            "/guide/style-constants",
+            components::guide::style_constants::Content
+        );
+        $mac!(
+            "/guide/style-functions",
+            components::guide::style_functions::Content
+        );
+        $mac!(
+            "/guide/global-stylesheets",
+            components::guide::global_stylesheets::Content
+        );
+        $mac!(
+            "/guide/using-components",
+            components::guide::using_components::Content
+        );
+        $mac!(
+            "/guide/component-events",
+            components::guide::component_events::Content
+        );
         $mac!("/guide/properties", components::guide::properties::Content);
-        $mac!("/guide/server-side-rendering", components::guide::server_side_rendering::Content);
-        $mac!("/guide/i18n-support", components::guide::i18n_support::Content);
-        $mac!("/guide/runtime-performance-tips", components::guide::runtime_performance_tips::Content);
-        $mac!("/guide/compilation-performance-tips", components::guide::compilation_performance_tips::Content);
+        $mac!(
+            "/guide/server-side-rendering",
+            components::guide::server_side_rendering::Content
+        );
+        $mac!(
+            "/guide/i18n-support",
+            components::guide::i18n_support::Content
+        );
+        $mac!(
+            "/guide/runtime-performance-tips",
+            components::guide::runtime_performance_tips::Content
+        );
+        $mac!(
+            "/guide/compilation-performance-tips",
+            components::guide::compilation_performance_tips::Content
+        );
     };
 }
 
@@ -74,10 +122,7 @@ pub async fn server_side_rendering(
 
 #[cfg(not(target_arch = "wasm32"))]
 #[cfg(feature = "server-side-rendering")]
-async fn render_component<T>(
-    req_path: &str,
-    query_str: &str,
-) -> Result<String, hyper::StatusCode>
+async fn render_component<T>(req_path: &str, query_str: &str) -> Result<String, hyper::StatusCode>
 where
     T: PageMeta,
     T::QueryData: serde::de::DeserializeOwned,
@@ -104,13 +149,12 @@ where
 {
     let dom_backend = DomBackend::prerendering();
     let backend_context = BackendContext::new(dom_backend);
-    let prerendering_data_base64 = base64::encode(&bincode::serialize(prerendering_data.get()).unwrap());
+    let prerendering_data_base64 =
+        base64::encode(&bincode::serialize(prerendering_data.get()).unwrap());
     let (_mount_point, title, html_body) = backend_context
         .enter_sync(move |ctx| {
             let mount_point = ctx.prerendering_attach(prerendering_data).unwrap();
-            let title = ctx.root_component_with(&mount_point, |c| {
-                c.title().to_string()
-            });
+            let title = ctx.root_component_with(&mount_point, |c| c.title().to_string());
             let mut html_body = vec![];
             ctx.write_prerendering_html(&mut html_body).unwrap();
             (mount_point, title, html_body)
@@ -181,23 +225,30 @@ where
 
 /// jump to another page, doing a client side rendering
 #[allow(dead_code)]
-pub(crate) fn jump_to(
-    _req_path: &str,
-    _query_str: &str,
-) {
+pub(crate) fn jump_to(_req_path: &str, _query_str: &str) {
     #[cfg(target_arch = "wasm32")]
     {
         let url = if _query_str.len() > 0 {
-            format!("{}{}?{}", crate::config::path_prefix(), _req_path, _query_str)
+            format!(
+                "{}{}?{}",
+                crate::config::path_prefix(),
+                _req_path,
+                _query_str
+            )
         } else {
             format!("{}{}", crate::config::path_prefix(), _req_path)
         };
         HISTORY.with(|history| {
-            history.push_state_with_url(&JsValue::NULL, "", Some(&url)).unwrap();
+            history
+                .push_state_with_url(&JsValue::NULL, "", Some(&url))
+                .unwrap();
         });
-        web_sys::window().unwrap()
-            .document().unwrap()
-            .document_element().unwrap()
+        web_sys::window()
+            .unwrap()
+            .document()
+            .unwrap()
+            .document_element()
+            .unwrap()
             .set_scroll_top(0);
         if let Err(err) = client_side_rendering(_req_path, _query_str) {
             log::error!("{}", err);
@@ -208,7 +259,12 @@ pub(crate) fn jump_to(
 #[cfg(target_arch = "wasm32")]
 fn init_pop_state_listener(window: &web_sys::Window) {
     let closure = Closure::<dyn Fn()>::new(move || {
-        let location = web_sys::window().unwrap().document().unwrap().location().unwrap();
+        let location = web_sys::window()
+            .unwrap()
+            .document()
+            .unwrap()
+            .location()
+            .unwrap();
         let req_path = location.pathname().unwrap_or("".to_string());
         let search = location.search();
         let search = match search.as_ref() {
@@ -219,15 +275,15 @@ fn init_pop_state_listener(window: &web_sys::Window) {
         if let Err(err) = client_side_rendering(&req_path, &search[1..]) {
             log::error!("{}", err);
         }
-    }).into_js_value();
-    window.add_event_listener_with_callback("popstate", closure.unchecked_ref()).unwrap();
+    })
+    .into_js_value();
+    window
+        .add_event_listener_with_callback("popstate", closure.unchecked_ref())
+        .unwrap();
 }
 
 #[cfg(target_arch = "wasm32")]
-fn client_side_rendering(
-    req_path: &str,
-    query_str: &str,
-) -> Result<(), String> {
+fn client_side_rendering(req_path: &str, query_str: &str) -> Result<(), String> {
     macro_rules! route {
         ($p:expr, $c:ty) => {
             if (req_path == $p) {
@@ -240,9 +296,7 @@ fn client_side_rendering(
 }
 
 #[cfg(target_arch = "wasm32")]
-fn jump_to_component<T>(
-    query_str: &str,
-) -> Result<(), String>
+fn jump_to_component<T>(query_str: &str) -> Result<(), String>
 where
     T: PageMeta,
     T::QueryData: serde::de::DeserializeOwned,
@@ -254,7 +308,8 @@ where
         Err(_) => return Err("bad request".into()),
     };
     maomi_dom::DomBackend::async_task(async move {
-        let prerendering_data = BackendContext::<DomBackend>::prerendering_data::<T>(&query_data).await;
+        let prerendering_data =
+            BackendContext::<DomBackend>::prerendering_data::<T>(&query_data).await;
         BACKEND_CONTEXT.with(|backend_context| {
             let ret = backend_context
                 .borrow_mut()
@@ -269,7 +324,11 @@ where
                     let mount_point = ctx.prerendering_attach(prerendering_data).unwrap();
                     mount_point.root_component().rc().task_with(|this, _| {
                         let title = this.title();
-                        web_sys::window().unwrap().document().unwrap().set_title(&title);
+                        web_sys::window()
+                            .unwrap()
+                            .document()
+                            .unwrap()
+                            .set_title(&title);
                     });
                     CURRENT_MOUNT_POINT.with(|x| {
                         *x.borrow_mut() = Some(mount_point.into_dyn());

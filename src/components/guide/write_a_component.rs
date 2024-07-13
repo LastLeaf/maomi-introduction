@@ -1,8 +1,11 @@
-use maomi::{prelude::*, locale_string::*};
-use maomi_dom::{prelude::*, element::*};
+use maomi::{locale_string::*, prelude::*};
+use maomi_dom::{element::*, prelude::*};
 
-use crate::{PageMeta, components::utils::{code_segment::*, link::RawLink}};
-use super::{GuideWrapper, section, section_title, section_desc};
+use super::{section, section_desc, section_title, GuideWrapper};
+use crate::{
+    components::utils::{code_segment::*, link::RawLink},
+    PageMeta,
+};
 
 i18n_group!(guide as trans);
 
@@ -183,6 +186,11 @@ impl PrerenderableComponent for Content {
 
 impl PageMeta for Content {
     fn title(&self) -> LocaleString {
-        trans!("{} - {}", trans!("maomi Guide"), trans!("Write a Component")).to_locale_string()
+        trans!(
+            "{} - {}",
+            trans!("maomi Guide"),
+            trans!("Write a Component")
+        )
+        .to_locale_string()
     }
 }

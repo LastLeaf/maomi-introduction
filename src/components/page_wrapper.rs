@@ -1,5 +1,5 @@
 use maomi::prelude::*;
-use maomi_dom::{prelude::*, element::*};
+use maomi_dom::{element::*, prelude::*};
 
 use crate::components;
 use components::utils::link::*;

@@ -1,8 +1,8 @@
-use maomi::{prelude::*, locale_string::*};
-use maomi_dom::{prelude::*, element::*};
+use maomi::{locale_string::*, prelude::*};
+use maomi_dom::{element::*, prelude::*};
 
-use crate::PageMeta;
 use crate::components;
+use crate::PageMeta;
 use components::page_wrapper::PageWrapper;
 
 stylesheet!(
