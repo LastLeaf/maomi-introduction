@@ -30,7 +30,7 @@ pub(crate) struct Content {
                     <CodeLine text=r#"}"# />
                     <CodeLine text=r#""# />
                     <CodeLine text=r#"impl MyWebsite {"# />
-                    <CodeLine text=r#"    fn handle_click(this: ComponentRc<Self>, _ev: &mut MouseEvent) {"# />
+                    <CodeLine text=r#"    fn handle_click(this: ComponentEvent<Self, MouseEvent>) {"# />
                     <CodeLine text=r#"        this.task(move |this| {"# />
                     <CodeLine text=r#"            // update component here"# />
                     <CodeLine text=r#"        })"# />
@@ -59,7 +59,7 @@ pub(crate) struct Content {
                     <CodeLine text=r#"}"# />
                     <CodeLine text=r#""# />
                     <CodeLine text=r#"impl MyWebsite {"# />
-                    <CodeLine em=&{Emphasize} text=r#"    fn handle_click(_this: ComponentRc<Self>, _ev: &mut MouseEvent, s: &str) {"# />
+                    <CodeLine em=&{Emphasize} text=r#"    fn handle_click(_this: ComponentEvent<Self, MouseEvent>, s: &str) {"# />
                     <CodeLine text=r#"        log::debug!("Clicked: {}", s);"# />
                     <CodeLine text=r#"    }"# />
                     <CodeLine text=r#"}"# />
@@ -80,7 +80,7 @@ pub(crate) struct Content {
                     <CodeLine text=r#"}"# />
                     <CodeLine text=r#""# />
                     <CodeLine text=r#"impl MyWebsite {"# />
-                    <CodeLine text=r#"    fn handle_tap(_this: ComponentRc<Self>, _ev: &mut TapEvent) {"# />
+                    <CodeLine text=r#"    fn handle_tap(_this: ComponentEvent<Self, TapEvent>) {"# />
                     <CodeLine text=r#"        log::debug!("Tapped");"# />
                     <CodeLine text=r#"    }"# />
                     <CodeLine text=r#"}"# />
@@ -97,11 +97,11 @@ pub(crate) struct Content {
                     <CodeLine text=r#"}"# />
                     <CodeLine text=r#""# />
                     <CodeLine text=r#"impl MyWebsite {"# />
-                    <CodeLine text=r#"    fn handle_tap(_this: ComponentRc<Self>, _ev: &mut TapEvent) {"# />
+                    <CodeLine text=r#"    fn handle_tap(_this: ComponentEvent<Self, TapEvent>) {"# />
                     <CodeLine text=r#"        log::debug!("Tapped");"# />
                     <CodeLine text=r#"    }"# />
                     <CodeLine text=r#""# />
-                    <CodeLine text=r#"    fn handle_long_tap(_this: ComponentRc<Self>, ev: &mut TapEvent) {"# />
+                    <CodeLine text=r#"    fn handle_long_tap(_this: ComponentEvent<Self, TapEvent>) {"# />
                     <CodeComment em=&{Emphasize} indent=8 text=&{ trans!(r#"avoid further tap event"#) } />
                     <CodeLine em=&{Emphasize} text=r#"        ev.prevent_default();"# />
                     <CodeLine text=r#"        log::debug!("Long tapped");"# />
