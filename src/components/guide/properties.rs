@@ -97,7 +97,7 @@ pub(crate) struct Content {
                     <CodeLine text=r#"}"# />
                     <CodeLine text=r#""# />
                     <CodeLine text=r#"impl MyChild {"# />
-                    <CodeLine text=r#"    fn value_changed(this: ComponentRc<Self>, _: &mut InputEvent) {"# />
+                    <CodeLine text=r#"    fn value_changed(this: ComponentEvent<Self, InputEvent>) {"# />
                     <CodeLine text=r#"        this.task_with(|this, _| {"# />
                     <CodeLine text=r#"            this.content.set(this.input_value.get());"# />
                     <CodeLine text=r#"            this.change.trigger(&mut ());"# />
@@ -124,7 +124,7 @@ pub(crate) struct Content {
                     <CodeLine text=r#"}"# />
                     <CodeLine text=r#""# />
                     <CodeLine text=r#"impl MyWebsite {"# />
-                    <CodeLine text=r#"    fn content_changed(this: ComponentRc<Self>, _: &mut ()) {"# />
+                    <CodeLine text=r#"    fn content_changed(this: ComponentEvent<Self, ()>) {"# />
                     <CodeLine text=r#"        this.task(|_| {});"# />
                     <CodeLine text=r#"    }"# />
                     <CodeLine text=r#"}"# />

@@ -61,8 +61,8 @@ pub(crate) struct Content {
                     <CodeLine text=r#"}"# />
                     <CodeLine text=r#""# />
                     <CodeLine text=r#"impl MyWebsite {"# />
-                    <CodeLine em=&{Emphasize} text=r#"    fn handle_my_event(_: ComponentRc<Self>, data: &mut String) {"# />
-                    <CodeLine em=&{Emphasize} text=r#"        log::debug!("{}", data);"# />
+                    <CodeLine em=&{Emphasize} text=r#"    fn handle_my_event(this: ComponentEvent<Self, String>) {"# />
+                    <CodeLine em=&{Emphasize} text=r#"        log::debug!("{}", this.detail());"# />
                     <CodeLine em=&{Emphasize} text=r#"    }"# />
                     <CodeLine text=r#"}"# />
                 </_>
