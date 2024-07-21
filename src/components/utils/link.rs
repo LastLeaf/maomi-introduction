@@ -44,14 +44,14 @@ impl Component for Link {
 }
 
 impl Link {
-    fn tap(this: ComponentRc<Self>, _: &mut TapEvent) {
+    fn tap(this: ComponentEvent<Self, TapEvent>) {
         this.task_with(|this, _| {
             crate::jump_to(&this.path, &this.query);
         });
     }
 
-    fn click(_: ComponentRc<Self>, detail: &mut MouseEvent) {
-        detail.prevent_default();
+    fn click(mut this: ComponentEvent<Self, MouseEvent>) {
+        this.detail_mut().prevent_default();
     }
 }
 

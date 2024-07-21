@@ -27,8 +27,8 @@ serde = { version = "1", features = ["derive"] }
 serde_urlencoded = "0.7"
 bincode = "1.3"
 base64 = "0.13"
-maomi = "0.4"
-maomi-dom = "0.4"
+maomi = "0.5"
+maomi-dom = "0.5"
 log = "0.4"
 wasm-bindgen = "0.2"
 clap = { version = "4.1", features = ["derive"] }
